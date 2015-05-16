@@ -64,3 +64,11 @@ class AnonymousNodeTest(BaseTestCase):
 
         self.assertTrue(node.is_viewable_by(self.anonymous_user))
         self.assertFalse(node.is_viewable_by(self.user))
+
+class AuthenticatedNodeTest(BaseTestCase):
+
+    def test_is_viewable_by_authenticated_user(self):
+        node = menu.AuthenticatedNode('Example', url='http://example.com')
+
+        self.assertFalse(node.is_viewable_by(self.anonymous_user))
+        self.assertTrue(node.is_viewable_by(self.user))

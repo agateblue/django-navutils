@@ -74,11 +74,13 @@ class Node(object):
 
 
 class AnonymousNode(Node):
+    """Only viewable by anonymous users"""
     def is_viewable_by(self, user):
         return not user.is_authenticated()
 
 
 class AuthenticatedNode(Node):
+    """Only viewable by authenticated users"""
     def is_viewable_by(self, user):
         return user.is_authenticated()
 
