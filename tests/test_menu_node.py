@@ -9,4 +9,4 @@ class MenuNodeTest(TestCase):
 
     def test_menu_node_allows_django_routes(self):
         menu_node = MenuNode('Example', route='index')
-        self.assertEqual(menu_node.get_url(), '/test/index')
+        self.assertEqual(menu_node.get_url(), '/')

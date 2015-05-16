@@ -19,6 +19,7 @@ def pytest_configure():
             'django.contrib.contenttypes',
             'django.contrib.admin',
             'django.contrib.sessions',
+            'tests.test_app',
         ],
         MIDDLEWARE_CLASSES=(
             'django.contrib.sessions.middleware.SessionMiddleware',
@@ -35,7 +36,7 @@ def pytest_configure():
         },
         MEDIA_ROOT='/tmp/django_extensions_test_media/',
         MEDIA_PATH='/media/',
-        ROOT_URLCONF='tests.urls',
+        ROOT_URLCONF='tests.test_app.urls',
         DEBUG=True,
         TEMPLATE_DEBUG=True,
     )

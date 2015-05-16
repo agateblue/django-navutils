@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 
 class MenuNode(object):
     """
@@ -57,7 +57,7 @@ class MenuNode(object):
                 key: value for key, value in kwargs.items()
                 if key in self.reverse_kwargs
             }
-            return reverse_lazy(self.route, kwargs=expected_kwargs)
+            return reverse(self.route, kwargs=expected_kwargs)
         return self.url
 
     def add(self, item):
