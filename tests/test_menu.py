@@ -61,24 +61,34 @@ class NodeTest(BaseTestCase):
         child2 = menu.Node('c2', 'Child2', weight=1, url='http://test.com/child2')
         child3 = menu.Node('c3', 'Child3', weight=2, url='http://test.com/child3')
 
+        children = [child1, child2, child3]
         parent = menu.Node(
             'test',
             'Test',
             url='http://test.com',
-            children=[
-                child1,
-                child2,
-                child3,
-            ]
+            children=children
         )
 
         self.assertEqual(parent.children, [child1, child3, child2])
-
         # we add another child, order should be updated
         child4 = menu.Node('c4', 'Child4', weight=999, url='http://test.com/child4')
         parent.add(child4)
 
         self.assertEqual(parent.children, [child4, child1, child3, child2])
+
+    def test_children_accept_a_callable(self):
+
+        def generate_children():
+            return [menu.Node(i, i, url='#') for i in range(5)]
+
+        parent = menu.Node(
+            'test',
+            'Test',
+            url='http://test.com',
+            children=generate_children
+        )
+        for i in range(5):
+            self.assertEqual(parent.children[i].id, i)
 
     def test_menu_node_is_viewable_by_anobody(self):
         node = menu.Node('test', 'Test', url='http://test.com')
@@ -183,7 +193,7 @@ class TemplateTagTest(BaseTestCase):
         )
 
         output = navutils_tags.render_node(node, user=self.user, max_depth=1)
-        print(output)
+
         self.assertHTMLEqual(
             output,
             """

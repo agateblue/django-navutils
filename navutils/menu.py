@@ -16,8 +16,9 @@ class Node(object):
 
     parent = None
 
-    def __init__(self, id, label, route=None, url=None, weight=0,
-                 template='navutils/menu/node.html', **kwargs):
+    def __init__(self, id, label, route=None, url=None, weight=0, title=None,
+                 template='navutils/menu/node.html', children=[], css_class=None,
+                 reverse_kwargs=[], **kwargs):
         """
         :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
@@ -29,7 +30,8 @@ class Node(object):
         :param list reverse_kwargs: A list of strings that the route will\
         accept when reversing. Defaults to ``[]``
         :param list children: A list of children :py:class:`Node` instances\
-        that will be considered as submenus of this instance.\
+        that will be considered as submenus of this instance.\ You can also pass\
+        a callable that will return an iterable of menu nodes.
         Defaults to ``[]``.
         :param str css_class: a CSS class that will be applied to the node when
         rendering
@@ -46,16 +48,23 @@ class Node(object):
         self.route = route
         self.url = url
         self.label = label
-        self.title = kwargs.get('title')
+        self.title = title
         self.weight = weight
         self.template = template
-        self.css_class = kwargs.get('css_class')
+        self.css_class = css_class
 
-        self.reverse_kwargs = kwargs.get('reverse_kwargs', [])
+        self.reverse_kwargs = reverse_kwargs
+        self._children = children
+        if not hasattr(self._children, '__call__'):
+            self._children = []
+            for node in children:
+                self.add(node)
 
-        self.children = []
-        for node in kwargs.get('children', []):
-            self.add(node)
+    @property
+    def children(self):
+        if hasattr(self._children, '__call__'):
+            return self._children()
+        return self._children
 
     def get_url(self, **kwargs):
         """
@@ -79,9 +88,9 @@ class Node(object):
         :param node: A node instance
         """
         node.parent = self
-        self.children.append(node)
-        self.children = sorted(
-            self.children,
+        self._children.append(node)
+        self._children = sorted(
+            self._children,
             key=lambda i: i.weight,
             reverse=True
         )
@@ -93,6 +102,8 @@ class Node(object):
     def depth(self):
         return 0 if not self.parent else self.parent.depth + 1
 
+    def __repr__(self):
+        return '<MenuNode {0}>'.format(self.label)
 
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
