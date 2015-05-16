@@ -3,6 +3,7 @@ from django.conf import settings
 
 def pytest_configure():
     import sys
+    
     try:
         import django  # NOQA
     except ImportError:

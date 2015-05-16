@@ -25,7 +25,7 @@ setup(
     platforms=['any'],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[],
+    install_requires=['persisting_theory'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',

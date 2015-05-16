@@ -1,14 +1,25 @@
 from django.core.urlresolvers import reverse
 
+from persisting_theory import Registry
+
+
+class Menu(Registry):
+    look_into = 'menu'
+
+    def prepare_name(self, data, name=None):
+        return data.id
+
+menu = Menu()
 
 
 class Node(object):
 
     parent = None
 
-    def __init__(self, label, route=None, url=None, weight=0,
+    def __init__(self, id, label, route=None, url=None, weight=0,
                  template='navutils/menu/node.html', **kwargs):
         """
+        :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
         :param str route: the name of a django url, such as `myapp:index` to use
         as a link for the node. It will be automatically reversed.
@@ -31,6 +42,7 @@ class Node(object):
         if not route and not url:
             raise ValueError('MenuNode needs either a url or a route arg')
 
+        self.id = id
         self.route = route
         self.url = url
         self.label = label
@@ -80,7 +92,7 @@ class Node(object):
     @property
     def depth(self):
         return 0 if not self.parent else self.parent.depth + 1
-        
+
 
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
