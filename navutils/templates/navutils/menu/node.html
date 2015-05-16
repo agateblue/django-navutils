@@ -1,11 +1,11 @@
 {% load navutils_tags %}
 
 <li class="menu-item{% if node.css_class %} {{ node.css_class }}{% endif %}{% if viewable_children %} has-children{% endif %}">
-    <a href="{{ node.url }}" {% if node.title %}title="{{ node.title }}"{% endif %}>{{ node.label }}</a>
+    <a href="{{ node.url }}"{% if node.title %} title="{{ node.title }}"{% endif %}>{{ node.label }}</a>
     {% if viewable_children %}
         <ul class="sub-menu">
             {% for children_node in node.children %}
-                {% render_node children_node user %}
+                {% render_node children_node user=user max_depth=max_depth current_depth=current_depth|add:'1' start_depth=start_depth %}
             {% endfor %}
         </ul>
     {% endif %}

@@ -133,3 +133,66 @@ class TemplateTagTest(BaseTestCase):
         self.assertHTMLEqual(
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+
+    def test_render_node_template_tag_with_children(self):
+        child1 = menu.Node('c1', 'c1', url='c1')
+        child2 = menu.Node('c2', 'c2', url='c2')
+        child3 = menu.Node('c3', 'c3', url='c3')
+
+        node = menu.Node(
+            'test',
+            'Test',
+            url='http://test.com',
+            children=[
+                child1,
+                child2,
+                child3,
+            ]
+        )
+
+        output = navutils_tags.render_node(node, user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <li class="menu-item has-children">
+                <a href="http://test.com">Test</a>
+                <ul class="sub-menu">
+                    <li class="menu-item"><a href="c1">c1</a></li>
+                    <li class="menu-item"><a href="c2">c2</a></li>
+                    <li class="menu-item"><a href="c3">c3</a></li>
+                </ul>
+            </li>
+            """)
+
+    def test_render_node_template_tag_with_children_and_depth(self):
+        subchild = menu.Node('s1', 's1', url='s1')
+        child1 = menu.Node('c1', 'c1', url='c1', children=[subchild])
+        child2 = menu.Node('c2', 'c2', url='c2')
+        child3 = menu.Node('c3', 'c3', url='c3')
+
+        node = menu.Node(
+            'test',
+            'Test',
+            url='http://test.com',
+            children=[
+                child1,
+                child2,
+                child3,
+            ]
+        )
+
+        output = navutils_tags.render_node(node, user=self.user, max_depth=1)
+        print(output)
+        self.assertHTMLEqual(
+            output,
+            """
+            <li class="menu-item has-children">
+                <a href="http://test.com">Test</a>
+                <ul class="sub-menu">
+                    <li class="menu-item"><a href="c1">c1</a></li>
+                    <li class="menu-item"><a href="c2">c2</a></li>
+                    <li class="menu-item"><a href="c3">c3</a></li>
+                </ul>
+            </li>
+            """)
