@@ -1,7 +1,9 @@
 from django.test import LiveServerTestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
+
 from navutils import menu
+from navutils.templatetags import navutils_tags
 
 User = get_user_model()
 
@@ -120,3 +122,14 @@ class MenuTest(BaseTestCase):
         menu.menu.register(node)
 
         self.assertEqual(menu.menu.get('test'), node)
+
+
+class TemplateTagTest(BaseTestCase):
+
+    def test_render_node_template_tag(self):
+        node = menu.Node('test', 'Test', url='http://test.com')
+
+        output = navutils_tags.render_node(node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item"><a href="http://test.com">Test</a></li>')

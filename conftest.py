@@ -3,7 +3,7 @@ from django.conf import settings
 
 def pytest_configure():
     import sys
-    
+
     try:
         import django  # NOQA
     except ImportError:
@@ -20,6 +20,7 @@ def pytest_configure():
             'django.contrib.contenttypes',
             'django.contrib.admin',
             'django.contrib.sessions',
+            'navutils',
             'tests.test_app',
         ],
         MIDDLEWARE_CLASSES=(
