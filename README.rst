@@ -32,9 +32,7 @@ Menus
 *****
 
 Navutils represents menus using `Menu` and `Node` instances, each menu being a collection of
-node instances representing a menu link. Nodes may have children, which are also `Node` instances.
-
-.. code::python
+node instances representing a menu link. Nodes may have children, which are also `Node` instances::
 
     from navutils import menu
 
