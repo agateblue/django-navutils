@@ -206,3 +206,13 @@ class TemplateTagTest(BaseTestCase):
                 </ul>
             </li>
             """)
+
+        output = navutils_tags.render_node(node, user=self.user, max_depth=0)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <li class="menu-item">
+                <a href="http://test.com">Test</a>
+            </li>
+            """)
