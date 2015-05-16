@@ -1,11 +1,7 @@
 from django.core.urlresolvers import reverse
 
-class MenuNode(object):
-    """
-    Describe a menu element, and may be attached to an
-    :py:class:`App <kii.app.core.App>` instance (via the :py:attr:`menu
-    <kii.app.core.App.menu>` attribute) for automatic inclusion in templates.
-    """
+class Node(object):
+
 
     def __init__(self, label, route=None, url=None, weight=0,
                  template='navutils/menu/node.html', **kwargs):
@@ -75,3 +71,18 @@ class MenuNode(object):
 
     def is_viewable_by(self, user):
         return True
+
+
+class AnonymousNode(Node):
+    def is_viewable_by(self, user):
+        return not user.is_authenticated()
+
+
+class AuthenticatedNode(Node):
+    def is_viewable_by(self, user):
+        return user.is_authenticated()
+
+
+class AdminNode(AuthenticatedNode):
+    def is_viewable_by(self, user):
+        return user.is_staff or user.is_superuser
