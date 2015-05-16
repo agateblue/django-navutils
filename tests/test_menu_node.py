@@ -24,25 +24,35 @@ class BaseTestCase(LiveServerTestCase):
 class NodeTest(BaseTestCase):
 
     def test_menu_node_allows_arbitrary_url(self):
-        node = menu.Node('Example', url='http://example.com')
-        self.assertEqual(node.get_url(), 'http://example.com')
+        node = menu.Node('Test', url='http://test.com')
+
+        self.assertEqual(node.get_url(), 'http://test.com')
 
     def test_menu_node_allows_django_route(self):
-        node = menu.Node('Example', route='index')
+        node = menu.Node('Test', route='index')
+
         self.assertEqual(node.get_url(), '/')
 
     def test_menu_node_allows_django_route_with_kwargs(self):
-        node = menu.Node('Example', route='category', reverse_kwargs=['slug'])
+        node = menu.Node('Test', route='category', reverse_kwargs=['slug'])
+
         self.assertEqual(node.get_url(slug='test'), '/category/test')
 
+    def test_children_keep_reference_to_parent(self):
+        child = menu.Node('Child', url='http://test.com/child')
+        parent = menu.Node('Test', url='http://test.com', children=[child])
+
+        self.assertEqual(child.parent, parent)
+
+
     def test_menu_node_sort_children_by_weight(self):
-        child1 = menu.Node('Child1', weight=3, url='http://example.com/child1')
-        child2 = menu.Node('Child2', weight=1, url='http://example.com/child2')
-        child3 = menu.Node('Child3', weight=2, url='http://example.com/child3')
+        child1 = menu.Node('Child1', weight=3, url='http://test.com/child1')
+        child2 = menu.Node('Child2', weight=1, url='http://test.com/child2')
+        child3 = menu.Node('Child3', weight=2, url='http://test.com/child3')
 
         parent = menu.Node(
-            'Example',
-            url='http://example.com',
+            'Test',
+            url='http://test.com',
             children=[
                 child1,
                 child2,
@@ -53,20 +63,21 @@ class NodeTest(BaseTestCase):
         self.assertEqual(parent.children, [child1, child3, child2])
 
         # we add another child, order should be updated
-        child4 = menu.Node('Child4', weight=999, url='http://example.com/child4')
+        child4 = menu.Node('Child4', weight=999, url='http://test.com/child4')
         parent.add(child4)
 
         self.assertEqual(parent.children, [child4, child1, child3, child2])
 
     def test_menu_node_is_viewable_by_anobody(self):
-        node = menu.Node('Example', url='http://example.com')
+        node = menu.Node('Test', url='http://test.com')
+        
         self.assertTrue(node.is_viewable_by(self.user))
 
 
 class AnonymousNodeTest(BaseTestCase):
 
     def test_is_viewable_by_anonymous_user(self):
-        node = menu.AnonymousNode('Example', url='http://example.com')
+        node = menu.AnonymousNode('Test', url='http://test.com')
 
         self.assertTrue(node.is_viewable_by(self.anonymous_user))
         self.assertFalse(node.is_viewable_by(self.user))
@@ -75,7 +86,7 @@ class AnonymousNodeTest(BaseTestCase):
 class AuthenticatedNodeTest(BaseTestCase):
 
     def test_is_viewable_by_authenticated_user(self):
-        node = menu.AuthenticatedNode('Example', url='http://example.com')
+        node = menu.AuthenticatedNode('Test', url='http://test.com')
 
         self.assertFalse(node.is_viewable_by(self.anonymous_user))
         self.assertTrue(node.is_viewable_by(self.user))
@@ -84,7 +95,7 @@ class AuthenticatedNodeTest(BaseTestCase):
 class StaffNodeTest(BaseTestCase):
 
     def test_is_viewable_by_staff_members_or_admin(self):
-        node = menu.StaffNode('Example', url='http://example.com')
+        node = menu.StaffNode('Test', url='http://test.com')
 
         self.assertTrue(node.is_viewable_by(self.staff_member))
         self.assertTrue(node.is_viewable_by(self.admin))

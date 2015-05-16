@@ -1,26 +1,30 @@
 from django.core.urlresolvers import reverse
 
+
+
 class Node(object):
 
+    parent = None
 
     def __init__(self, label, route=None, url=None, weight=0,
                  template='navutils/menu/node.html', **kwargs):
         """
-        :param str route: Either a relative URL, absolute URL or a django URL\
-        name, such as ``myapp:index``. Defaults to ``#``.
-        :param bool reverse: Wether the given route should be reversed using\
-        django's :py:func:`reverse` or returned 'as is'. Defaults to ``True``.
-        :param int weight: Indicate the importance of the node. Higher is more\
+        :param str label: a label for the node, that will be displayed in templates
+        :param str route: the name of a django url, such as `myapp:index` to use
+        as a link for the node. It will be automatically reversed.
+        :param str url: a URL to use as a link for the node
+        :param int weight: The importance of the node. Higher is more\
         important, default to ``0``.
-        :param function is_viewable_by: Used to determine if the node\
-        should be shown to request user. Defaults to ``True``.
         :param list reverse_kwargs: A list of strings that the route will\
         accept when reversing. Defaults to ``[]``
-        :param list children: A list of children :py:class:`MenuNode` instances\
+        :param list children: A list of children :py:class:`Node` instances\
         that will be considered as submenus of this instance.\
         Defaults to ``[]``.
-        :param icon: TODO, seems useless.
-
+        :param str css_class: a CSS class that will be applied to the node when
+        rendering
+        :param str title: a title to populate the html title attribute of the node
+        :param str template: the template that will be used to render the node.\
+        defaults to `navutils/menu/node.html`
         """
         if route and url:
             raise ValueError('MenuNode accepts either a url or a route arg, but not both')
@@ -45,7 +49,7 @@ class Node(object):
         """
         :param kwargs: a dictionary of values that will be used for reversing,\
         if the corresponding key is present in :py:attr:`self.reverse_kwargs\
-        <MenuNode.reverse_kwargs>`
+        <Node.reverse_kwargs>`
         :return: The target URL of the node, after reversing (if needed)
         """
         if self.route:
@@ -62,6 +66,7 @@ class Node(object):
 
         :param item: A menu node instance
         """
+        item.parent = self
         self.children.append(item)
         self.children = sorted(
             self.children,
