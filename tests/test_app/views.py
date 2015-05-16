@@ -1,4 +1,4 @@
 
 
-def index():
+def blank():
     return

@@ -7,6 +7,10 @@ class MenuNodeTest(TestCase):
         menu_node = MenuNode('Example', url='http://example.com')
         self.assertEqual(menu_node.get_url(), 'http://example.com')
 
-    def test_menu_node_allows_django_routes(self):
+    def test_menu_node_allows_django_route(self):
         menu_node = MenuNode('Example', route='index')
         self.assertEqual(menu_node.get_url(), '/')
+
+    def test_menu_node_allows_django_route_with_kwargs(self):
+        menu_node = MenuNode('Example', route='category', reverse_kwargs=['slug'])
+        self.assertEqual(menu_node.get_url(slug='test'), '/category/test')
