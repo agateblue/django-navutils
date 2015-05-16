@@ -13,6 +13,12 @@ class BaseTestCase(LiveServerTestCase):
         self.user.save()
         self.anonymous_user = AnonymousUser()
 
+        self.admin = User(username='admin', is_superuser=True)
+        self.admin.save()
+
+        self.staff_member = User(username='staff', is_staff=True)
+        self.staff_member.save()
+
 
 
 class NodeTest(BaseTestCase):
@@ -65,6 +71,7 @@ class AnonymousNodeTest(BaseTestCase):
         self.assertTrue(node.is_viewable_by(self.anonymous_user))
         self.assertFalse(node.is_viewable_by(self.user))
 
+
 class AuthenticatedNodeTest(BaseTestCase):
 
     def test_is_viewable_by_authenticated_user(self):
@@ -72,3 +79,14 @@ class AuthenticatedNodeTest(BaseTestCase):
 
         self.assertFalse(node.is_viewable_by(self.anonymous_user))
         self.assertTrue(node.is_viewable_by(self.user))
+
+
+class StaffNodeTest(BaseTestCase):
+
+    def test_is_viewable_by_staff_members_or_admin(self):
+        node = menu.StaffNode('Example', url='http://example.com')
+
+        self.assertTrue(node.is_viewable_by(self.staff_member))
+        self.assertTrue(node.is_viewable_by(self.admin))
+        self.assertFalse(node.is_viewable_by(self.user))
+        self.assertFalse(node.is_viewable_by(self.anonymous_user))

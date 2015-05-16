@@ -85,6 +85,8 @@ class AuthenticatedNode(Node):
         return user.is_authenticated()
 
 
-class AdminNode(AuthenticatedNode):
+class StaffNode(AuthenticatedNode):
+    """Only viewable by staff members / admins"""
+
     def is_viewable_by(self, user):
         return user.is_staff or user.is_superuser
