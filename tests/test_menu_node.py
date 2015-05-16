@@ -44,6 +44,15 @@ class NodeTest(BaseTestCase):
 
         self.assertEqual(child.parent, parent)
 
+    def test_node_depth(self):
+        subchild = menu.Node('SubChild', url='http://test.com/subchild')
+        child = menu.Node('Child', url='http://test.com/child', children=[subchild])
+        parent = menu.Node('Test', url='http://test.com', children=[child])
+
+        self.assertEqual(parent.depth, 0)
+        self.assertEqual(child.depth, 1)
+        self.assertEqual(subchild.depth, 2)
+
 
     def test_menu_node_sort_children_by_weight(self):
         child1 = menu.Node('Child1', weight=3, url='http://test.com/child1')
@@ -70,7 +79,7 @@ class NodeTest(BaseTestCase):
 
     def test_menu_node_is_viewable_by_anobody(self):
         node = menu.Node('Test', url='http://test.com')
-        
+
         self.assertTrue(node.is_viewable_by(self.user))
 
 

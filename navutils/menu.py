@@ -42,8 +42,8 @@ class Node(object):
         self.reverse_kwargs = kwargs.get('reverse_kwargs', [])
 
         self.children = []
-        for item in kwargs.get('children', []):
-            self.add(item)
+        for node in kwargs.get('children', []):
+            self.add(node)
 
     def get_url(self, **kwargs):
         """
@@ -60,14 +60,14 @@ class Node(object):
             return reverse(self.route, kwargs=expected_kwargs)
         return self.url
 
-    def add(self, item):
+    def add(self, node):
         """
         Add a new node to the instance children and sort them by weight.
 
-        :param item: A menu node instance
+        :param node: A node instance
         """
-        item.parent = self
-        self.children.append(item)
+        node.parent = self
+        self.children.append(node)
         self.children = sorted(
             self.children,
             key=lambda i: i.weight,
@@ -77,6 +77,10 @@ class Node(object):
     def is_viewable_by(self, user):
         return True
 
+    @property
+    def depth(self):
+        return 0 if not self.parent else self.parent.depth + 1
+        
 
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
