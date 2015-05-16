@@ -16,18 +16,18 @@ class Node(object):
 
     parent = None
 
-    def __init__(self, id, label, route=None, url=None, weight=0, title=None,
+    def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
                  template='navutils/menu/node.html', children=[], css_class=None,
                  reverse_kwargs=[], **kwargs):
         """
         :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
-        :param str route: the name of a django url, such as `myapp:index` to use
+        :param str pattern_name: the name of a django url, such as `myapp:index` to use
         as a link for the node. It will be automatically reversed.
         :param str url: a URL to use as a link for the node
         :param int weight: The importance of the node. Higher is more\
         important, default to ``0``.
-        :param list reverse_kwargs: A list of strings that the route will\
+        :param list reverse_kwargs: A list of strings that the pattern_name will\
         accept when reversing. Defaults to ``[]``
         :param list children: A list of children :py:class:`Node` instances\
         that will be considered as submenus of this instance.\ You can also pass\
@@ -39,13 +39,13 @@ class Node(object):
         :param str template: the template that will be used to render the node.\
         defaults to `navutils/menu/node.html`
         """
-        if route and url:
-            raise ValueError('MenuNode accepts either a url or a route arg, but not both')
-        if not route and not url:
-            raise ValueError('MenuNode needs either a url or a route arg')
+        if pattern_name and url:
+            raise ValueError('MenuNode accepts either a url or a pattern_name arg, but not both')
+        if not pattern_name and not url:
+            raise ValueError('MenuNode needs either a url or a pattern_name arg')
 
         self.id = id
-        self.route = route
+        self.pattern_name = pattern_name
         self.url = url
         self.label = label
         self.title = title
@@ -73,12 +73,12 @@ class Node(object):
         <Node.reverse_kwargs>`
         :return: The target URL of the node, after reversing (if needed)
         """
-        if self.route:
+        if self.pattern_name:
             expected_kwargs = {
                 key: value for key, value in kwargs.items()
                 if key in self.reverse_kwargs
             }
-            return reverse(self.route, kwargs=expected_kwargs)
+            return reverse(self.pattern_name, kwargs=expected_kwargs)
         return self.url
 
     def add(self, node):

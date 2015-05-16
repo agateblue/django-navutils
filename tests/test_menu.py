@@ -30,13 +30,13 @@ class NodeTest(BaseTestCase):
 
         self.assertEqual(node.get_url(), 'http://test.com')
 
-    def test_menu_node_allows_django_route(self):
-        node = menu.Node('test', 'Test', route='index')
+    def test_menu_node_allows_django_pattern_name(self):
+        node = menu.Node('test', 'Test', pattern_name='index')
 
         self.assertEqual(node.get_url(), '/')
 
-    def test_menu_node_allows_django_route_with_kwargs(self):
-        node = menu.Node('test', 'Test', route='category', reverse_kwargs=['slug'])
+    def test_menu_node_allows_django_pattern_name_with_kwargs(self):
+        node = menu.Node('test', 'Test', pattern_name='category', reverse_kwargs=['slug'])
 
         self.assertEqual(node.get_url(slug='test'), '/category/test')
 
