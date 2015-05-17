@@ -1,7 +1,7 @@
 {% load navutils_tags %}
 
 <li class="{% block node_class %}menu-item{% if node.css_class %} {{ node.css_class }}{% endif %}{% if viewable_children %} has-children{% endif %}{% endblock %}">
-    <a href="{{ node.url }}"{% if node.title %} title="{{ node.title }}"{% endif %}>{% block node_label %}{{ node.label }}{% endblock %}</a>
+    <a href="{{ node.url }}"{% for attr, value in node.link_attrs.items %} {{ attr }}="{{ value }}"{% endfor %}>{% block node_label %}{{ node.label }}{% endblock %}</a>
     {% if viewable_children %}
         <ul class="{% block submenu_class %}sub-menu{% endblock %}">
             {% for children_node in viewable_children %}

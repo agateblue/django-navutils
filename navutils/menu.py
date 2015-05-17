@@ -18,7 +18,7 @@ class Node(object):
 
     def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
                  template='navutils/menu/node.html', children=[], css_class=None,
-                 reverse_kwargs=[], **kwargs):
+                 reverse_kwargs=[], node_attrs={}, link_attrs={}, **kwargs):
         """
         :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
@@ -38,6 +38,10 @@ class Node(object):
         :param str title: a title to populate the html title attribute of the node
         :param str template: the template that will be used to render the node.\
         defaults to `navutils/menu/node.html`
+        :param dict node_attrs: a dictionnary of attributes to apply to the node
+        html
+        :param dict link_attrs: a dictionnary of attributes to apply to the node
+        link html
         """
         if pattern_name and url:
             raise ValueError('MenuNode accepts either a url or a pattern_name arg, but not both')
@@ -52,9 +56,15 @@ class Node(object):
         self.weight = weight
         self.template = template
         self.css_class = css_class
-
         self.reverse_kwargs = reverse_kwargs
+        self.link_attrs = link_attrs
+        self.node_attrs = node_attrs
+        
+        if 'class' in self.node_attrs:
+            raise ValueError('Node class is already handled by the css_class argument')
+
         self._children = children
+
         if not hasattr(self._children, '__call__'):
             self._children = []
             for node in children:

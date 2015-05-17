@@ -144,6 +144,18 @@ class TemplateTagTest(BaseTestCase):
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
 
+    def test_render_node_template_tag_with_link_attrs(self):
+        attrs = {'target': '_blank', 'title': 'Click me !'}
+        node = menu.Node('test', 'Test', url='http://test.com', link_attrs=attrs)
+
+        output = navutils_tags.render_node(node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            """<li class="menu-item">
+                <a href="http://test.com" target="_blank" title="Click me !">Test</a>
+            </li>""")
+
+            
     def test_render_node_template_tag_with_children(self):
         child1 = menu.Node('c1', 'c1', url='c1')
         child2 = menu.Node('c2', 'c2', url='c2')
