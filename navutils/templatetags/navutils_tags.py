@@ -5,7 +5,8 @@ register = template.Library()
 
 @register.simple_tag
 def render_node(node, user, max_depth=999, current_depth=None, start_depth=None):
-
+    if not node.is_viewable_by(user):
+        return ''
     start_depth = start_depth or node.depth
     current_depth = current_depth or node.depth - start_depth
 

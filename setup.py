@@ -22,7 +22,6 @@ def find_version(*parts):
     raise RuntimeError("Unable to find version string.")
 
 
-
 setup(
     name='django-navutils',
     version=find_version(PACKAGE_NAME, '__version__.py'),
