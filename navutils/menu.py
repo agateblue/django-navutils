@@ -18,6 +18,7 @@ class Menu(Registry):
     """A collection of nodes"""
     def __init__(self, id, *args, **kwargs):
         self.id = id
+        self.template = kwargs.pop('template', 'navutils/menu.html')
         super(Menu, self).__init__(*args, **kwargs)
 
     def prepare_name(self, data, name=None):
@@ -30,7 +31,7 @@ class Node(object):
     parent = None
 
     def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
-                 template='navutils/menu/node.html', children=[], css_class=None,
+                 template='navutils/node.html', children=[], css_class=None,
                  reverse_kwargs=[], attrs={}, link_attrs={}, **kwargs):
         """
         :param str id: a unique identifier for further retrieval
