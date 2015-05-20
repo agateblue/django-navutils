@@ -15,6 +15,31 @@ class BreadcrumbTest(LiveServerTestCase):
 
         self.assertEqual(crumb.get_url(), 'http://test.com')
 
+    def test_mixin_pass_context_data(self):
+        response = self.client.get('/')
+
+        self.assertEqual(response.context['breadcrumbs'][0].get_url(), '/' )
+        self.assertEqual(response.context['breadcrumbs'][0].label, 'Home')
+
+    def test_mixin_inherit_crumbs(self):
+        response = self.client.get('/blog')
+
+        self.assertEqual(response.context['breadcrumbs'][0].get_url(), '/' )
+        self.assertEqual(response.context['breadcrumbs'][0].label, 'Home')
+
+        self.assertEqual(response.context['breadcrumbs'][1].get_url(), '/blog' )
+        self.assertEqual(response.context['breadcrumbs'][1].label, 'Blog')
+
+        response = self.client.get('/blog/category/test')
+
+        self.assertEqual(response.context['breadcrumbs'][0].get_url(), '/' )
+        self.assertEqual(response.context['breadcrumbs'][0].label, 'Home')
+
+        self.assertEqual(response.context['breadcrumbs'][1].get_url(), '/blog' )
+        self.assertEqual(response.context['breadcrumbs'][1].label, 'Blog')
+
+        self.assertEqual(response.context['breadcrumbs'][2].get_url(), '/blog/category/test' )
+        self.assertEqual(response.context['breadcrumbs'][2].label, 'Test')
 
 
 class RenderBreadcrumbTest(TestCase):
