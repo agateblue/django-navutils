@@ -6,8 +6,7 @@ Features:
 
 - No database calls
 - Highly customizable
-- User targeting in menu, so you can display a menu node to users that match a specific
-criteria (authenticated, anonymous, staff member, or any custom check)
+- User targeting in menu, so you can display a menu node to users that match a specific criteria (authenticated, anonymous, staff member, or any custom check)
 - Translatable
 
 Requirements
@@ -25,7 +24,7 @@ Package is available on pip and can be installed via ``pip install django-navuti
 
 You'll also have to add ``navutils`` to your ``settings.INSTALLED_APPS``
 
-Also add the following to ``settings.CONTEXT_PROCESSORS``:
+Also add the following to ``settings.CONTEXT_PROCESSORS``::
 
     CONTEXT_PROCESSORS = (
         # ...
