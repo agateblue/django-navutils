@@ -161,7 +161,7 @@ Breadcrumbs
 
 Breadcrumbs are set up into views, and therefore can only be used with class-based views.
 
-First of all, you'll probably want to define a BaseView for your app::
+First of all, you'll probably want to define a base mixin for all your views::
 
     from navutils import BreadcrumbsMixin, Breadcrumb
 
@@ -173,41 +173,42 @@ First of all, you'll probably want to define a BaseView for your app::
 
 Then, you can inherit from this view everywhere::
 
+    # breadcrumbs = Home > Blog
     class BlogView(BaseMixin):
         title = 'Blog'
 
-        # breadcrumbs = Home > Blog
 
+    # breadcrumbs = Home > Logout
     class LogoutView(BaseMixin):
         title = 'Logout'
 
-        # breadcrumbs = Home > Logout
 
 By default, the last element of the breadcrumb is deduced from the ``title`` attribute of the view.
 However, for a complex hierarchy, you are free to override the ``get_breadcrumbs`` method::
 
+    # you can trigger url reversing via pattern_name, as for menu nodes
     class BlogMixin(BaseMixin)
         def get_breadcrumbs(self):
             breadcrumbs = super(BlogMixin, self).get_breadcrumbs()
-            # note you can use url reversing via pattern_name, as for menu nodes
             breadcrumbs.append(Breadcrumb('Blog', pattern_name='blog:index'))
             return breadcrumbs
 
 
+    # breadcrumbs = Home > Blog > Last entries
     class BlogIndex(BlogMixin):
         title = 'Last entries'
-        # breadcrumbs = Home > Blog > Last entries
 
 
+    # for dynamic titles, just override the get_title method
+    # breadcrumbs = Home > Blog > My category name
     class CategoryDetail(BlogMixin, DetailView):
 
         model = Category
 
-        # for dynamic titles, just override the get_title method
         def get_title(self):
+            # assuming your Category model has a title field
             return self.object.title
 
-        # breadcrumbs = Home > Blog > My category name
 
 The last step is to render the breadcrumbs in your template. The provided mixin takes
 care with passing data in the context, so all you need is::
@@ -222,10 +223,3 @@ The breadcrumbs part of navutils is bundled with two templates, feel free to ove
 - ``navutils/crumb.html``: used to render each crumb
 
 That's it !
-
-For more complex
-
-
-
-
-Breadcrumbs instances
