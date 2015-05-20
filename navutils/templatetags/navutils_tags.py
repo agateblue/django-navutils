@@ -25,3 +25,21 @@ def render_node(node, user, max_depth=999, current_depth=None, start_depth=None)
         'current_depth': current_depth,
         'start_depth': start_depth,
     }))
+
+@register.simple_tag
+def render_crumb(crumb, **kwargs):
+
+    t = template.loader.get_template('navutils/crumb.html')
+
+    return t.render(template.Context({
+        'crumb': crumb,
+    }))
+
+@register.simple_tag
+def render_breadcrumbs(crumbs, **kwargs):
+
+    t = template.loader.get_template('navutils/breadcrumbs.html')
+
+    return t.render(template.Context({
+        'crumbs': crumbs,
+    }))

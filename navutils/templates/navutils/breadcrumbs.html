@@ -1,0 +1,9 @@
+{% load navutils_tags %}
+
+{% if crumbs %}
+    <ul class="breadcrumbs">
+        {% for crumb in crumbs %}
+            {% render_crumb crumb %}
+        {% endfor %}
+    </ul>
+{% endif %}
