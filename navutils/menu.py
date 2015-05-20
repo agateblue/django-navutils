@@ -3,13 +3,26 @@ from django.core.urlresolvers import reverse
 from persisting_theory import Registry
 
 
-class Menu(Registry):
-    look_into = 'menu'
+class Menus(Registry):
+    """ Keep a reference to all menus"""
+    look_into = 'menus'
 
     def prepare_name(self, data, name=None):
         return data.id
 
-menu = Menu()
+registry = Menus()
+register = registry.register
+
+
+class Menu(Registry):
+    """A collection of nodes"""
+    def __init__(self, id, *args, **kwargs):
+        self.id = id
+        super(Menu, self).__init__(*args, **kwargs)
+
+    def prepare_name(self, data, name=None):
+        return data.id
+
 
 
 class Node(object):
@@ -47,7 +60,7 @@ class Node(object):
         if not pattern_name and not url:
             raise ValueError('MenuNode needs either a url or a pattern_name arg')
 
-        self.id = id
+        self._id = id
         self.pattern_name = pattern_name
         self.url = url
         self.label = label
@@ -105,6 +118,12 @@ class Node(object):
 
     def is_viewable_by(self, user):
         return True
+
+    @property
+    def id(self):
+        if self.parent:
+            return '{0}:{1}'.format(self.parent.id, self._id)
+        return self._id
 
     @property
     def depth(self):

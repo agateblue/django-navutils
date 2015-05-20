@@ -36,31 +36,31 @@ node instances representing a menu link. Nodes may have children, which are also
 
 Let's see a minimal example.
 
-``yourapp/menu.py``::
+``yourapp/menus.py``::
 
-    from navutils import menu
+    from navutils import menus
 
-    main_menu = menu.Menu('main')
-    menu.register(main_menu)
+    main_menu = menus.Menu('main')
+    menus.registry.register(main_menu)
 
     # will be shown to everybody
-    blog = menu.Node(id='blog', label='Blog', pattern_name='blog:index')
+    blog = menus.Node(id='blog', label='Blog', pattern_name='blog:index')
     main_menu.register(blog)
 
     # Let's add some children
-    blog.children.add(menu.Node(id='last_entries', label='Last entries'), pattern_name='blog:last_entries')
-    blog.children.add(menu.Node(id='archives', label='Archives'), pattern_name='blog:archives')
+    blog.children.add(menus.Node(id='last_entries', label='Last entries'), pattern_name='blog:last_entries')
+    blog.children.add(menus.Node(id='archives', label='Archives'), pattern_name='blog:archives')
 
     # you can also make a link to any arbitrary URL
-    django = menu.Node(id='django', label='Django project', url='http://djangoproject.com', link_attrs={'target': '_blank'})
+    django = menus.Node(id='django', label='Django project', url='http://djangoproject.com', link_attrs={'target': '_blank'})
     main_menu.register(django)
 
     # will be shown to anonymous users only
-    login = menu.AnonymousNode(id='login', label='Login', pattern_name='accounts_login', link_attrs={'class': 'big-button'})
+    login = menus.AnonymousNode(id='login', label='Login', pattern_name='accounts_login', link_attrs={'class': 'big-button'})
     main_menu.register(login)
 
     # will be shown to authenticated users only
-    logout = menu.AuthenticatedNode(id='logout', label='Logout', pattern_name='accounts_logout')
+    logout = menus.AuthenticatedNode(id='logout', label='Logout', pattern_name='accounts_logout')
     main_menu.register(login)
 
 
@@ -95,22 +95,22 @@ For an anonymous user, this would input something like::
     </nav>
 
 
-You can also add children nodes upon parent instanciation via the ``children`` argument::
+You can also add children nodes on parent instanciation with the ``children`` argument::
 
-    user = menu.Node(
+    user = menus.Node(
         id='user',
         label='Greetings',
         pattern_name='user:dashboard',
         children=[
-            menu.Node(id='logout', label='Logout', pattern_name='user:logout'),
+            menus.Node(id='logout', label='Logout', pattern_name='user:logout'),
 
             # you can nest chldren indefinitely
-            menu.Node(
+            menus.Node(
                 id='settings',
                 label='Settings',
                 pattern_name='user:settings',
                 children = [
-                    menu.Node(id='newsletter', label='Newsletter', pattern_name='user:settings:newsletter')
+                    menus.Node(id='newsletter', label='Newsletter', pattern_name='user:settings:newsletter')
                 ],
             ),
         ]
@@ -119,7 +119,7 @@ You can also add children nodes upon parent instanciation via the ``children`` a
 
 Nodes can be customized in many ways::
 
-    heavily_customized_node = menu.Node(
+    heavily_customized_node = menus.Node(
         'customized',
         'My custom menu',
         url='#',

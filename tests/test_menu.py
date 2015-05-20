@@ -23,6 +23,15 @@ class BaseTestCase(LiveServerTestCase):
 
 
 
+class MenuTest(BaseTestCase):
+    def test_menu_can_register_nodes(self):
+        main_menu = menu.Menu('main')
+        node = menu.Node('test', 'Test', url='http://test.com')
+        main_menu.register(node)
+
+        self.assertEqual(main_menu['test'], node)
+
+
 class NodeTest(BaseTestCase):
 
     def test_menu_node_allows_arbitrary_url(self):
@@ -96,6 +105,16 @@ class NodeTest(BaseTestCase):
         self.assertTrue(node.is_viewable_by(self.user))
 
 
+    def test_node_id_is_built_from_menu_and_parent(self):
+        subchild = menu.Node('sc', 'SubChild', url='http://test.com/subchild')
+        child = menu.Node('c', 'Child', url='http://test.com/child', children=[subchild])
+        parent = menu.Node('test', 'Test', url='http://test.com', children=[child])
+
+
+        self.assertEqual(parent.id, 'test')
+        self.assertEqual(child.id, 'test:c')
+        self.assertEqual(subchild.id, 'test:c:sc')
+
 class AnonymousNodeTest(BaseTestCase):
 
     def test_is_viewable_by_anonymous_user(self):
@@ -125,16 +144,7 @@ class StaffNodeTest(BaseTestCase):
         self.assertFalse(node.is_viewable_by(self.anonymous_user))
 
 
-class MenuTest(BaseTestCase):
-
-    def test_name_is_set_automatically(self):
-        node = menu.Node('test', 'Test', url='http://test.com')
-        menu.menu.register(node)
-
-        self.assertEqual(menu.menu.get('test'), node)
-
-
-class TemplateTagTest(BaseTestCase):
+class RenderNodeTest(BaseTestCase):
 
     def test_render_node_template_tag(self):
         node = menu.Node('test', 'Test', url='http://test.com')
@@ -165,7 +175,6 @@ class TemplateTagTest(BaseTestCase):
             """<li class="menu-item" id="important">
                 <a href="http://test.com">Test</a>
             </li>""")
-
 
     def test_render_node_template_tag_with_children(self):
         child1 = menu.Node('c1', 'c1', url='c1')
@@ -239,3 +248,14 @@ class TemplateTagTest(BaseTestCase):
                 <a href="http://test.com">Test</a>
             </li>
             """)
+
+# class RenderMenuTest(BaseTestCase):
+#
+#     def test_template_tag(self):
+#         menu = menu.Menu('main')
+#         node = menu.Node('test', 'Test', url='http://test.com')
+#
+#         output = navutils_tags.render_node(node, user=self.user)
+#         self.assertHTMLEqual(
+#             output,
+#             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
