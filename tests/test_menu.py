@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase
+from django.test import TestCase 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 
@@ -8,7 +8,7 @@ from navutils.templatetags import navutils_tags
 User = get_user_model()
 
 
-class BaseTestCase(LiveServerTestCase):
+class BaseTestCase(TestCase):
     def setUp(self):
         self.user = User(username='user')
         self.user.set_password('test')

@@ -1,10 +1,10 @@
-from django.test import LiveServerTestCase, TestCase
+from django.test import TestCase
 
 from navutils import Breadcrumb
 from navutils.templatetags import navutils_tags
 
 
-class BreadcrumbTest(LiveServerTestCase):
+class BreadcrumbTest(TestCase):
     def test_breadcrumb_reverse(self):
         crumb = Breadcrumb(label='Test', pattern_name='index')
 
