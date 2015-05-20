@@ -63,6 +63,6 @@ class RenderBreadcrumbTest(TestCase):
             """
             <ul class="breadcrumbs">
                 <li class="crumb"><a href="/">Test1</a></li>
-                <li class="crumb"><a href="http://test.com">Test2</a></li>
+                <li class="crumb current"><a href="http://test.com">Test2</a></li>
             </ul>
             """)

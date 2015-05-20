@@ -198,9 +198,9 @@ class RenderNodeTest(BaseTestCase):
         self.assertHTMLEqual(
             output,
             """
-            <li class="menu-item has-children">
+            <li class="menu-item has-children has-dropdown">
                 <a href="http://test.com">Test</a>
-                <ul class="sub-menu">
+                <ul class="sub-menu dropdown">
                     <li class="menu-item"><a href="c1">c1</a></li>
                     <li class="menu-item"><a href="c2">c2</a></li>
                     <li class="menu-item"><a href="c3">c3</a></li>
@@ -230,9 +230,9 @@ class RenderNodeTest(BaseTestCase):
         self.assertHTMLEqual(
             output,
             """
-            <li class="menu-item has-children">
+            <li class="menu-item has-children has-dropdown">
                 <a href="http://test.com">Test</a>
-                <ul class="sub-menu">
+                <ul class="sub-menu dropdown">
                     <li class="menu-item"><a href="c1">c1</a></li>
                     <li class="menu-item"><a href="c2">c2</a></li>
                     <li class="menu-item"><a href="c3">c3</a></li>
