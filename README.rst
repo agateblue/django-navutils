@@ -25,6 +25,13 @@ Package is available on pip and can be installed via ``pip install django-navuti
 
 You'll also have to add ``navutils`` to your ``settings.INSTALLED_APPS``
 
+Also add the following to ``settings.CONTEXT_PROCESSORS``:
+
+    CONTEXT_PROCESSORS = (
+        # ...
+        'navutils.context_processors.menus',
+    )
+
 Usage
 =====
 
@@ -73,12 +80,11 @@ Let's see a minimal example.
 ``yourapp/templates/index.html``::
 
     {% load navutils_tags %}
-    {% render_menu 'main' %}
+    {% render_menu menus.main user=request.user %}
 
 For an anonymous user, this would input something like::
 
-
-    <nav class="main">
+    <nav class="main-menu">
         <ul>
             <li class="has-children menu-item">
                 <a href="/blog">Blog<a>
@@ -101,7 +107,7 @@ For an anonymous user, this would input something like::
     </nav>
 
 
-You can also add children nodes on parent instanciation with the ``children`` argument::
+You can also directly set children nodes on parent instanciation with the ``children`` argument::
 
     user = menu.Node(
         id='user',
@@ -110,7 +116,7 @@ You can also add children nodes on parent instanciation with the ``children`` ar
         children=[
             menu.Node(id='logout', label='Logout', pattern_name='user:logout'),
 
-            # you can nest chldren indefinitely
+            # you can nest children indefinitely
             menu.Node(
                 id='settings',
                 label='Settings',
@@ -121,7 +127,6 @@ You can also add children nodes on parent instanciation with the ``children`` ar
             ),
         ]
     )
-
 
 Nodes can be customized in many ways::
 
@@ -136,4 +141,91 @@ Nodes can be customized in many ways::
         # the <a> title attribute
         title='click me!',
 
+        # a path to a custom template for rendering the node
+        template='myapp/menu/mynode.html',
+
+        # a dict of attributes that will be applied as HTML attributes on the <li>
+        attrs = {'style': 'background-color: white;'}
+
+        # a dict of attributes that will be applied as HTML attributes on the <a>
+        link_attrs = {'target': '_blank', 'data-something': 'fancy-stuff'}
     )
+
+If it's not enough, you can also override the default templates:
+
+- ``navutils/menu.html`` : the menu wrapper that loop through the nodes
+- ``navutils/node.html`` : called for displaying each node instance
+
+Breadcrumbs
+***********
+
+Breadcrumbs are set up into views, and therefore can only be used with class-based views.
+
+First of all, you'll probably want to define a BaseView for your app::
+
+    from navutils import BreadcrumbsMixin, Breadcrumb
+
+    class BaseMixin(BreadcrumbsMixin):
+        def get_breadcrumbs(self):
+            breadcrumbs = super(BaseMixin, self).get_breadcrumbs()
+            breadcrumbs.append(Breadcrumb('Home', url='/'))
+            return breadcrumbs
+
+Then, you can inherit from this view everywhere::
+
+    class BlogView(BaseMixin):
+        title = 'Blog'
+
+        # breadcrumbs = Home > Blog
+
+    class LogoutView(BaseMixin):
+        title = 'Logout'
+
+        # breadcrumbs = Home > Logout
+
+By default, the last element of the breadcrumb is deduced from the ``title`` attribute of the view.
+However, for a complex hierarchy, you are free to override the ``get_breadcrumbs`` method::
+
+    class BlogMixin(BaseMixin)
+        def get_breadcrumbs(self):
+            breadcrumbs = super(BlogMixin, self).get_breadcrumbs()
+            # note you can use url reversing via pattern_name, as for menu nodes
+            breadcrumbs.append(Breadcrumb('Blog', pattern_name='blog:index'))
+            return breadcrumbs
+
+
+    class BlogIndex(BlogMixin):
+        title = 'Last entries'
+        # breadcrumbs = Home > Blog > Last entries
+
+
+    class CategoryDetail(BlogMixin, DetailView):
+
+        model = Category
+
+        # for dynamic titles, just override the get_title method
+        def get_title(self):
+            return self.object.title
+
+        # breadcrumbs = Home > Blog > My category name
+
+The last step is to render the breadcrumbs in your template. The provided mixin takes
+care with passing data in the context, so all you need is::
+
+    {% load navutils_tags %}
+
+    {% render_breadcrumbs breadcrumbs %}
+
+The breadcrumbs part of navutils is bundled with two templates, feel free to override them:
+
+- ``navutils/breadcrumbs.html``: the breadcrumbs wrapper
+- ``navutils/crumb.html``: used to render each crumb
+
+That's it !
+
+For more complex
+
+
+
+
+Breadcrumbs instances
