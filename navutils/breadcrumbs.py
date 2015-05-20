@@ -28,7 +28,7 @@ class Breadcrumb(object):
 class BreadcrumbsMixin(object):
 
     title = ''
-    curren_url = None
+    current_url = None
 
     def get_title(self):
         return self.title

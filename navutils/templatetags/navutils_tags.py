@@ -34,6 +34,7 @@ def render_crumb(crumb, **kwargs):
 
     return t.render(template.Context({
         'crumb': crumb,
+        'last': kwargs.get('last', False),
     }))
 
 @register.simple_tag
