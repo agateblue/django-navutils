@@ -49,9 +49,12 @@ class BreadcrumbsMixin(object):
                 url = self.get_current_url() or '#'
                 breadcrumbs.append(Breadcrumb(url=url, reverse=False, label=title))
 
-        # append parent breadcrumb title for better SEO
-        if seo_title and breadcrumbs[-2] != breadcrumbs[0] and breadcrumbs[-2].label:
-            seo_title += ' - {0}'.format(breadcrumbs[-2].label)
+        try:
+            # append parent breadcrumb title for better SEO
+            if seo_title and breadcrumbs[-2] != breadcrumbs[0] and breadcrumbs[-2].label:
+                seo_title += ' - {0}'.format(breadcrumbs[-2].label)
+        except IndexError:
+            pass
 
         context['breadcrumbs'] = breadcrumbs
         context['title'] = title
