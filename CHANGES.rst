@@ -1,4 +1,8 @@
 
+0.1.3 (21/05/2015):
+
+- added MANIFEST (templates were not included)
+
 0.1.2 (21/05/2015):
 
 - added MANIFEST (templates were not included)
