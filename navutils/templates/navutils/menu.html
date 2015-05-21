@@ -1,0 +1,7 @@
+{% load navutils_tags %}
+
+<ul class="{{ menu.id }}-menu">
+    {% for menu_node in viewable_nodes %}
+        {% render_node menu_node user=user %}
+    {% endfor %}
+</ul>

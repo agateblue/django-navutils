@@ -1,0 +1,13 @@
+{% load navutils_tags %}
+
+{% if crumbs %}
+    <ul class="breadcrumbs">
+        {% for crumb in crumbs %}
+            {% if forloop.last %}
+                {% render_crumb crumb last=True %}
+            {% else %}
+                {% render_crumb crumb %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}

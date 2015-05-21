@@ -1,0 +1,14 @@
+{% load navutils_tags %}
+
+<li
+    class="{% block node_class %}menu-item{% if node.css_class %} {{ node.css_class }}{% endif %}{% if viewable_children %} has-children has-dropdown{% endif %}{% endblock %}"
+    {% for attr, value in node.attrs.items %} {{ attr }}="{{ value }}"{% endfor %}>
+    <a href="{{ node.get_url }}"{% for attr, value in node.link_attrs.items %} {{ attr }}="{{ value }}"{% endfor %}>{% block node_label %}{{ node.label }}{% endblock %}</a>
+    {% if viewable_children %}
+        <ul class="{% block submenu_class %}sub-menu dropdown{% endblock %}">
+            {% for children_node in viewable_children %}
+                {% render_node children_node user=user max_depth=max_depth current_depth=current_depth|add:'1' start_depth=start_depth %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
