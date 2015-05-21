@@ -12,7 +12,8 @@ Features:
 Requirements
 ============
 
-The project is tested under python 2.7 and 3.4, along with django 1.7 and 1.8.
+- Python >= 2.7 or >= 3.3
+- Django >= 1.7
 
 The menu system may be integrated in any project, but the breadcrumbs part requires
 that you use class-based views.

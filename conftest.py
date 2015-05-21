@@ -1,7 +1,7 @@
-from django.conf import settings
 
 
 def pytest_configure():
+    from django.conf import settings
     import sys
 
     try:
