@@ -1,4 +1,8 @@
 
+0.1.4 (21/05/2015):
+
+- removed useless print statement
+
 0.1.3 (21/05/2015):
 
 - added MANIFEST (templates were not included)
