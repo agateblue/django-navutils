@@ -35,6 +35,11 @@ setup(
     license='BSD License',
     platforms=['any'],
     packages=find_packages(),
+    package_data = {
+        'navutils': [
+            'templates/navutils/*.html',
+        ],
+    },
     include_package_data=True,
     install_requires=['persisting_theory'],
     classifiers=[
@@ -46,6 +51,8 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
+        'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8',
         'Topic :: Utilities',
     ],
 )
