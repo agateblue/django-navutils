@@ -8,7 +8,6 @@ def render_menu(menu, user, max_depth=999, **kwargs):
     t = template.loader.get_template(menu.template)
 
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user)]
-    print(viewable_nodes)
     if not viewable_nodes:
         return ''
 
