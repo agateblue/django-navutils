@@ -1,4 +1,10 @@
 
+
+- Added PermissionNode for checking against a single permission
+- Added AllPermissionsNode for checking against all permissions in set of permission
+- Added AnylPermissionsNode for checking against any permissions in set of permission
+- Added PassTestNode for providing a custom check
+
 0.1.4 (21/05/2015):
 
 - removed useless print statement
