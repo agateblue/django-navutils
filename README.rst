@@ -155,10 +155,79 @@ Nodes can be customized in many ways:
         link_attrs = {'target': '_blank', 'data-something': 'fancy-stuff'}
     )
 
+Node reference
+--------------
+
+Navutils provide a few node subclasses that address common use cases.
+
+Node
+++++
+
+The base Node type, will be displayed to anybody.
+
+AnonymousNode
++++++++++++++
+
+Displayed to anonymous users only.
+
+AuthenticatedNode
++++++++++++++++++
+
+Displayd to authenticated users only.
+
+StaffNode
++++++++++
+
+Displayed to staff users/superusers only.
+
+PermissionNode
+++++++++++++++
+
+Displayed to users that have the given permission. Usage:
+
+.. code:: python
+
+    vip_node = menu.PermissionNode('vip', label='VIP Area', pattern_name='vip:index', permission='access_vip_area')
+
+AllPermissionsNode
+++++++++++++++++++
+
+Displayed to users that match a list of permission. Usage:
+
+.. code:: python
+
+    permissions = ['myapp.access_vip_area', 'myapp.drink_champagne']
+    champagne_node = menu.AllPermissionsNode('champagne', label='Champagne!', pattern_name='vip:champagne', permissions=permissions)
+
+AnyPermissionsNode
+++++++++++++++++++
+
+Displayed to users that match any given permission. Usage:
+
+.. code:: python
+
+    permissions = ['myapp.can_party', 'myapp.can_have_fun']
+    have_a_good_time = menu.AnyPermissionsNode('good-time', label='Have a good time', pattern_name='good_time', permissions=permissions)
+
+
+PassTestNode
+++++++++++++
+
+Displayed to users that match a custom test. Usage:
+
+.. code:: python
+
+    def can_drink_alcohol(user):
+        return user.age >= 21 or user.looks_mature_for_his_age
+
+    drink_alcohol = menu.PassTestNode('drink', label='Have a beer', pattern_name='beer', test=can_drink_alcohol)
+
 If it's not enough, you can also override the default templates:
 
 - ``navutils/menu.html`` : the menu wrapper that loop through the nodes
 - ``navutils/node.html`` : called for displaying each node instance
+
+And of course, you're free to create your own sub-classes.
 
 Breadcrumbs
 ***********
