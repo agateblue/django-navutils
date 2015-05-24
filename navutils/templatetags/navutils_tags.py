@@ -3,8 +3,8 @@ from django import template
 register = template.Library()
 
 
-@register.simple_tag
-def render_menu(menu, user, max_depth=999, **kwargs):
+@register.simple_tag(takes_context=True)
+def render_menu(context, menu, user, max_depth=999, **kwargs):
     t = template.loader.get_template(menu.template)
 
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user)]
@@ -18,8 +18,8 @@ def render_menu(menu, user, max_depth=999, **kwargs):
         'max_depth': max_depth,
     }))
 
-@register.simple_tag
-def render_node(node, user, max_depth=999, current_depth=None, start_depth=None):
+@register.simple_tag(takes_context=True)
+def render_node(context, node, user, max_depth=999, current_depth=None, start_depth=None):
     if not node.is_viewable_by(user):
         return ''
     start_depth = start_depth or node.depth
@@ -42,8 +42,8 @@ def render_node(node, user, max_depth=999, current_depth=None, start_depth=None)
         'start_depth': start_depth,
     }))
 
-@register.simple_tag
-def render_crumb(crumb, **kwargs):
+@register.simple_tag(takes_context=True)
+def render_crumb(context, crumb, **kwargs):
 
     t = template.loader.get_template('navutils/crumb.html')
 
@@ -52,8 +52,8 @@ def render_crumb(crumb, **kwargs):
         'last': kwargs.get('last', False),
     }))
 
-@register.simple_tag
-def render_breadcrumbs(crumbs, **kwargs):
+@register.simple_tag(takes_context=True)
+def render_breadcrumbs(context, crumbs, **kwargs):
 
     t = template.loader.get_template('navutils/breadcrumbs.html')
 

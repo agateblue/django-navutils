@@ -231,7 +231,7 @@ class RenderNodeTest(BaseTestCase):
     def test_render_node_template_tag(self):
         node = menu.Node('test', 'Test', url='http://test.com')
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node, user=self.user)
         self.assertHTMLEqual(
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
@@ -240,7 +240,7 @@ class RenderNodeTest(BaseTestCase):
         attrs = {'target': '_blank', 'title': 'Click me !'}
         node = menu.Node('test', 'Test', url='http://test.com', link_attrs=attrs)
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node, user=self.user)
         self.assertHTMLEqual(
             output,
             """<li class="menu-item">
@@ -251,7 +251,7 @@ class RenderNodeTest(BaseTestCase):
         attrs = {'id': 'important'}
         node = menu.Node('test', 'Test', url='http://test.com', attrs=attrs)
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node, user=self.user)
         self.assertHTMLEqual(
             output,
             """<li class="menu-item" id="important">
@@ -274,7 +274,7 @@ class RenderNodeTest(BaseTestCase):
             ]
         )
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node, user=self.user)
 
         self.assertHTMLEqual(
             output,
@@ -306,7 +306,7 @@ class RenderNodeTest(BaseTestCase):
             ]
         )
 
-        output = navutils_tags.render_node(node, user=self.user, max_depth=1)
+        output = navutils_tags.render_node({}, node, user=self.user, max_depth=1)
 
         self.assertHTMLEqual(
             output,
@@ -321,7 +321,7 @@ class RenderNodeTest(BaseTestCase):
             </li>
             """)
 
-        output = navutils_tags.render_node(node, user=self.user, max_depth=0)
+        output = navutils_tags.render_node({}, node, user=self.user, max_depth=0)
 
         self.assertHTMLEqual(
             output,
@@ -337,7 +337,7 @@ class RenderNodeTest(BaseTestCase):
 #         menu = menu.Menu('main')
 #         node = menu.Node('test', 'Test', url='http://test.com')
 #
-#         output = navutils_tags.render_node(node, user=self.user)
+#         output = navutils_tags.render_node({}, node, user=self.user)
 #         self.assertHTMLEqual(
 #             output,
 #             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
