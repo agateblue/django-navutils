@@ -236,6 +236,15 @@ class RenderNodeTest(BaseTestCase):
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
 
+    def test_render_node_template_tagwith_current(self):
+        node = menu.Node('test', 'Test', url='http://test.com')
+
+        output = navutils_tags.render_node({'current':'test'}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item current"><a href="http://test.com">Test</a></li>')
+
+
     def test_render_node_template_tag_with_link_attrs(self):
         attrs = {'target': '_blank', 'title': 'Click me !'}
         node = menu.Node('test', 'Test', url='http://test.com', link_attrs=attrs)
@@ -285,6 +294,37 @@ class RenderNodeTest(BaseTestCase):
                     <li class="menu-item"><a href="c1">c1</a></li>
                     <li class="menu-item"><a href="c2">c2</a></li>
                     <li class="menu-item"><a href="c3">c3</a></li>
+                </ul>
+            </li>
+            """)
+
+    def test_render_node_template_tag_with_children_and_current(self):
+        child1 = menu.Node('c1', 'c1', url='c1')
+        child2 = menu.Node('c2', 'c2', url='c2')
+        child3 = menu.Node('c3', 'c3', url='c3')
+
+        node = menu.Node(
+            'test',
+            'Test',
+            url='http://test.com',
+            children=[
+                child1,
+                child2,
+                child3,
+            ]
+        )
+
+        output = navutils_tags.render_node({'current':'test:c3'}, node=node, user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <li class="menu-item has-children has-current has-dropdown">
+                <a href="http://test.com">Test</a>
+                <ul class="sub-menu dropdown">
+                    <li class="menu-item"><a href="c1">c1</a></li>
+                    <li class="menu-item"><a href="c2">c2</a></li>
+                    <li class="menu-item current"><a href="c3">c3</a></li>
                 </ul>
             </li>
             """)

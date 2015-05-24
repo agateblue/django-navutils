@@ -133,6 +133,14 @@ class Node(object):
     def __repr__(self):
         return '<MenuNode {0}>'.format(self.label)
 
+    def is_current(self, current):
+        return self.id == current
+
+    def has_current(self, current, viewable_children):
+        return any([child.is_current(current) for child in viewable_children])
+
+
+
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
     def is_viewable_by(self, user):
