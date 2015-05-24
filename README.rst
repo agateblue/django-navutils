@@ -43,7 +43,9 @@ node instances representing a menu link. Nodes may have children, which are also
 
 Let's see a minimal example.
 
-``yourapp/menu.py``::
+``yourapp/menu.py``:
+
+.. code:: python
 
     from navutils import menu
 
@@ -64,25 +66,23 @@ Let's see a minimal example.
     blog.children.add(menu.Node(id='last_entries', label='Last entries', pattern_name='blog:last_entries'))
     blog.children.add(menu.Node(id='archives', label='Archives', pattern_name='blog:archives'))
 
-    # you can also make a link to any arbitrary URL
-    django = menu.Node(id='django', label='Django project', url='http://djangoproject.com', link_attrs={'target': '_blank'})
-    main_menu.register(django)
-
     # will be shown to anonymous users only
     login = menu.AnonymousNode(id='login', label='Login', pattern_name='accounts_login', link_attrs={'class': 'big-button'})
     main_menu.register(login)
 
     # will be shown to authenticated users only
     logout = menu.AuthenticatedNode(id='logout', label='Logout', pattern_name='accounts_logout')
-    main_menu.register(login)
+    main_menu.register(logout)
 
 
 ``yourapp/templates/index.html``::
 
     {% load navutils_tags %}
-    {% render_menu menus.main user=request.user %}
+    {% render_menu menu=menus.main user=request.user %}
 
-For an anonymous user, this would input something like::
+For an anonymous user, this would output something like:
+
+.. code:: html
 
     <nav class="main-menu">
         <ul>
@@ -107,7 +107,9 @@ For an anonymous user, this would input something like::
     </nav>
 
 
-You can also directly set children nodes on parent instanciation with the ``children`` argument::
+You can also directly set children nodes on parent instanciation with the ``children`` argument:
+
+.. code:: python
 
     user = menu.Node(
         id='user',
@@ -128,7 +130,9 @@ You can also directly set children nodes on parent instanciation with the ``chil
         ]
     )
 
-Nodes can be customized in many ways::
+Nodes can be customized in many ways:
+
+.. code:: python
 
     heavily_customized_node = menu.Node(
         'customized',
@@ -161,7 +165,9 @@ Breadcrumbs
 
 Breadcrumbs are set up into views, and therefore can only be used with class-based views.
 
-First of all, you'll probably want to define a base mixin for all your views::
+First of all, you'll probably want to define a base mixin for all your views:
+
+.. code:: python
 
     from navutils import BreadcrumbsMixin, Breadcrumb
 
@@ -171,7 +177,9 @@ First of all, you'll probably want to define a base mixin for all your views::
             breadcrumbs.append(Breadcrumb('Home', url='/'))
             return breadcrumbs
 
-Then, you can inherit from this view everywhere::
+Then, you can inherit from this view everywhere:
+
+.. code:: python
 
     # breadcrumbs = Home > Blog
     class BlogView(BaseMixin):
@@ -184,7 +192,9 @@ Then, you can inherit from this view everywhere::
 
 
 By default, the last element of the breadcrumb is deduced from the ``title`` attribute of the view.
-However, for a complex hierarchy, you are free to override the ``get_breadcrumbs`` method::
+However, for a complex hierarchy, you are free to override the ``get_breadcrumbs`` method:
+
+.. code:: python
 
     # you can trigger url reversing via pattern_name, as for menu nodes
     class BlogMixin(BaseMixin)
