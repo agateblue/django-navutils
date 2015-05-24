@@ -1,13 +1,20 @@
+Django-navutils
+~~~~~~~~~~~~~~~
+
+**Note**: this package is still in beta. It has been successfully used in a few projects of my own. However, API may be subject to backward incompatible changes until the first major version is released.
 
 Django-navutils is a lightweight package for handling menu and breadcrumbs inside
 your django project.
 
 Features:
 
-- No database calls
+- No database involved (unless you want it): menus and breadcrumbs are plain old python code
 - Highly customizable
-- User targeting in menu, so you can display a menu node to users that match a specific criteria (authenticated, anonymous, staff member, or any custom check)
-- Translatable
+- Conditionnal menu items display: you want to show a menu link to authenticated users only ? Anonymous ? Staff members ? A custom criteria ? You're covered !
+- i18n-friendly: you can rely on usual django translation mechanisms
+- Unlimited menus
+
+
 
 Requirements
 ============
@@ -60,14 +67,24 @@ Let's see a minimal example.
     assert blog.get_url() == '/blog'
 
     # if you want to disable reversion, use the url argument
-    django = menu.Node(id='django', label='Django project', url='http://djangoproject.com', link_attrs={'target': '_blank'})
+    django = menu.Node(id='django',
+                       label='Django project',
+                       url='http://djangoproject.com',
+                       link_attrs={'target': '_blank'})
 
     # Each node instance can accept an arbitrary number of children
-    blog.children.add(menu.Node(id='last_entries', label='Last entries', pattern_name='blog:last_entries'))
-    blog.children.add(menu.Node(id='archives', label='Archives', pattern_name='blog:archives'))
+    blog.children.add(
+        menu.Node(id='last_entries', label='Last entries', pattern_name='blog:last_entries')
+    )
+    blog.children.add(
+        menu.Node(id='archives', label='Archives', pattern_name='blog:archives')
+    )
 
     # will be shown to anonymous users only
-    login = menu.AnonymousNode(id='login', label='Login', pattern_name='accounts_login', link_attrs={'class': 'big-button'})
+    login = menu.AnonymousNode(id='login',
+                               label='Login',
+                               pattern_name='accounts_login',
+                               link_attrs={'class': 'big-button'})
     main_menu.register(login)
 
     # will be shown to authenticated users only
@@ -187,7 +204,10 @@ Displayed to users that have the given permission. Usage:
 
 .. code:: python
 
-    vip_node = menu.PermissionNode('vip', label='VIP Area', pattern_name='vip:index', permission='access_vip_area')
+    vip_node = menu.PermissionNode('vip',
+                                   label='VIP Area',
+                                   pattern_name='vip:index',
+                                   permission='access_vip_area')
 
 AllPermissionsNode
 ++++++++++++++++++
@@ -197,7 +217,10 @@ Displayed to users that match a list of permission. Usage:
 .. code:: python
 
     permissions = ['myapp.access_vip_area', 'myapp.drink_champagne']
-    champagne_node = menu.AllPermissionsNode('champagne', label='Champagne!', pattern_name='vip:champagne', permissions=permissions)
+    champagne_node = menu.AllPermissionsNode('champagne',
+                                             label='Champagne!',
+                                             pattern_name='vip:champagne',
+                                             permissions=permissions)
 
 AnyPermissionsNode
 ++++++++++++++++++
@@ -207,7 +230,10 @@ Displayed to users that match any given permission. Usage:
 .. code:: python
 
     permissions = ['myapp.can_party', 'myapp.can_have_fun']
-    have_a_good_time = menu.AnyPermissionsNode('good-time', label='Have a good time', pattern_name='good_time', permissions=permissions)
+    have_a_good_time = menu.AnyPermissionsNode('good-time',
+                                               label='Have a good time',
+                                               pattern_name='good_time',
+                                               permissions=permissions)
 
 
 PassTestNode
