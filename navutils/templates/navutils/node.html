@@ -7,7 +7,7 @@
     {% if viewable_children %}
         <ul class="{% block submenu_class %}sub-menu dropdown{% endblock %}">
             {% for children_node in viewable_children %}
-                {% render_node children_node user=user max_depth=max_depth current_depth=current_depth|add:'1' start_depth=start_depth %}
+                {% render_node node=children_node current_depth=current_depth|add:'1' %}
             {% endfor %}
         </ul>
     {% endif %}

@@ -19,11 +19,21 @@ def render_menu(context, menu, user, max_depth=999, **kwargs):
     }))
 
 @register.simple_tag(takes_context=True)
-def render_node(context, node, user, max_depth=999, current_depth=None, start_depth=None):
+def render_node(context, **kwargs):
+    node = kwargs.get('node', context.get('node'))
+    if not node:
+        raise ValueError('Missing node argument')
+
+    user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
+    if not user:
+        raise ValueError('missing user parameter')
+
     if not node.is_viewable_by(user):
         return ''
-    start_depth = start_depth or node.depth
-    current_depth = current_depth or node.depth - start_depth
+
+    max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
+    start_depth = kwargs.get('start_depth', context.get('start_depth', node.depth))
+    current_depth = kwargs.get('current_depth', context.get('current_depth', node.depth - start_depth))
 
     viewable_children = []
     if current_depth + 1 <= max_depth:
