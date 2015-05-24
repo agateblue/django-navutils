@@ -341,3 +341,14 @@ The breadcrumbs part of navutils is bundled with two templates, feel free to ove
 - ``navutils/crumb.html``: used to render each crumb
 
 That's it !
+
+Changelog
+=========
+
+See `CHANGES.rst
+<CHANGES.rst>`_.
+
+License
+=======
+
+Project is licensed under BSD license.
