@@ -239,7 +239,7 @@ class RenderNodeTest(BaseTestCase):
     def test_render_node_template_tagwith_current(self):
         node = menu.Node('test', 'Test', url='http://test.com')
 
-        output = navutils_tags.render_node({'current':'test'}, node=node, user=self.user)
+        output = navutils_tags.render_node({'current_menu_item':'test'}, node=node, user=self.user)
         self.assertHTMLEqual(
             output,
             '<li class="menu-item current"><a href="http://test.com">Test</a></li>')
@@ -314,7 +314,7 @@ class RenderNodeTest(BaseTestCase):
             ]
         )
 
-        output = navutils_tags.render_node({'current':'test:c3'}, node=node, user=self.user)
+        output = navutils_tags.render_node({'current_menu_item':'test:c3'}, node=node, user=self.user)
 
         self.assertHTMLEqual(
             output,

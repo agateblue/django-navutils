@@ -31,7 +31,7 @@ def render_node(context, **kwargs):
     if not node.is_viewable_by(user):
         return ''
 
-    current = kwargs.get('current', context.get('current'))
+    current = kwargs.get('current_menu_item', context.get('current_menu_item'))
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     start_depth = kwargs.get('start_depth', context.get('start_depth', node.depth))
     current_depth = kwargs.get('current_depth', context.get('current_depth', node.depth - start_depth))
@@ -47,7 +47,7 @@ def render_node(context, **kwargs):
     return t.render(template.Context({
         'is_current': node.is_current(current),
         'has_current': node.has_current(current, viewable_children),
-        'current': current,
+        'current_menu_item': current,
         'node': node,
         'viewable_children': viewable_children,
         'user': user,
