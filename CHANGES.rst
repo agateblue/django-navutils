@@ -1,4 +1,4 @@
-
+0.2 (24/05/2015):
 
 - Added PermissionNode for checking against a single permission
 - Added AllPermissionsNode for checking against all permissions in set of permission
