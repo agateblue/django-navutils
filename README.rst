@@ -3,18 +3,18 @@ Django-navutils
 
 **Note**: this package is still in beta. It has been successfully used in a few projects of my own. However, API may be subject to backward incompatible changes until the first major version is released.
 
-Django-navutils is a lightweight package for handling menu and breadcrumbs inside
-your django project.
+Django-navutils is a lightweight package for handling menu and breadcrumbs inside your django project.
 
-Features:
+.. contents:: :local:
+
+Features
+========
 
 - No database involved (unless you want it): menus and breadcrumbs are plain old python code
 - Highly customizable
 - Conditionnal menu items display: you want to show a menu link to authenticated users only ? Anonymous ? Staff members ? A custom criteria ? You're covered !
 - i18n-friendly: you can rely on usual django translation mechanisms
 - Unlimited menus
-
-
 
 Requirements
 ============
