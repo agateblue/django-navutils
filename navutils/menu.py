@@ -150,3 +150,41 @@ class StaffNode(AuthenticatedNode):
 
     def is_viewable_by(self, user):
         return user.is_staff or user.is_superuser
+
+
+class PermissionNode(Node):
+    """Require that user has given permission to display"""
+
+    def __init__(self, *args, **kwargs):
+        self.permission = kwargs.pop('permission')
+        super(PermissionNode, self).__init__(*args, **kwargs)
+
+    def is_viewable_by(self, user):
+        return user.has_perm(self.permission)
+
+
+class AllPermissionsNode(Node):
+    """Require user has all given permissions to display"""
+
+    def __init__(self, *args, **kwargs):
+        self.permissions = kwargs.pop('permissions')
+        super(AllPermissionsNode, self).__init__(*args, **kwargs)
+
+    def is_viewable_by(self, user):
+        return all([user.has_perm(perm) for perm in self.permissions])
+
+
+
+class AnyPermissionsNode(Node):
+    """Require user has one of the given permissions to display"""
+
+    def __init__(self, *args, **kwargs):
+        self.permissions = kwargs.pop('permissions')
+        super(AnyPermissionsNode, self).__init__(*args, **kwargs)
+
+    def is_viewable_by(self, user):
+        for permission in self.permissions:
+            has_perm = user.has_perm(permission)
+            if has_perm:
+                return True
+        return False

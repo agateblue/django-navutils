@@ -1,6 +1,6 @@
-from django.test import TestCase 
+from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser, Permission
 
 from navutils import menu
 from navutils.templatetags import navutils_tags
@@ -143,6 +143,71 @@ class StaffNodeTest(BaseTestCase):
         self.assertTrue(node.is_viewable_by(self.admin))
         self.assertFalse(node.is_viewable_by(self.user))
         self.assertFalse(node.is_viewable_by(self.anonymous_user))
+
+
+class PermissionNodeTest(BaseTestCase):
+
+    def test_is_viewable_by_user_with_required_permission(self):
+
+        node = menu.PermissionNode('test', 'Test', url='http://test.com', permission='test_app.foo')
+
+        self.assertTrue(node.is_viewable_by(self.admin))
+        self.assertFalse(node.is_viewable_by(self.anonymous_user))
+        self.assertFalse(node.is_viewable_by(self.user))
+
+        permission = Permission.objects.get(codename='foo')
+        self.user.user_permissions.add(permission)
+        self.user = User.objects.get(pk=self.user.pk)
+
+        self.assertTrue(node.is_viewable_by(self.user))
+
+
+class AllPermissionsNodeTest(BaseTestCase):
+
+    def test_is_viewable_by_user_with_required_permissions(self):
+
+        node = menu.AllPermissionsNode('test', 'Test', url='http://test.com', permissions=['test_app.foo', 'test_app.bar'])
+
+        self.assertTrue(node.is_viewable_by(self.admin))
+        self.assertFalse(node.is_viewable_by(self.anonymous_user))
+        self.assertFalse(node.is_viewable_by(self.user))
+
+        permission = Permission.objects.get(codename='foo')
+        self.user.user_permissions.add(permission)
+        self.user = User.objects.get(pk=self.user.pk)
+
+        self.assertFalse(node.is_viewable_by(self.user))
+
+        permission = Permission.objects.get(codename='bar')
+        self.user.user_permissions.add(permission)
+        self.user = User.objects.get(pk=self.user.pk)
+
+        self.assertTrue(node.is_viewable_by(self.user))
+
+
+class AnyPermissionsNodeTest(BaseTestCase):
+
+    def test_is_viewable_by_user_with_any_required_permissions(self):
+
+        node = menu.AnyPermissionsNode('test', 'Test', url='http://test.com', permissions=['test_app.foo', 'test_app.bar'])
+
+        self.assertTrue(node.is_viewable_by(self.admin))
+        self.assertFalse(node.is_viewable_by(self.anonymous_user))
+        self.assertFalse(node.is_viewable_by(self.user))
+
+        permission = Permission.objects.get(codename='foo')
+        self.user.user_permissions.add(permission)
+        self.user = User.objects.get(pk=self.user.pk)
+
+        self.assertTrue(node.is_viewable_by(self.user))
+
+        self.user.user_permissions.remove(permission)
+
+        permission = Permission.objects.get(codename='bar')
+        self.user.user_permissions.add(permission)
+        self.user = User.objects.get(pk=self.user.pk)
+
+        self.assertTrue(node.is_viewable_by(self.user))
 
 
 class RenderNodeTest(BaseTestCase):
