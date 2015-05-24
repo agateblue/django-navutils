@@ -32,7 +32,9 @@ Package is available on pip and can be installed via ``pip install django-navuti
 
 You'll also have to add ``navutils`` to your ``settings.INSTALLED_APPS``
 
-Also add the following to ``settings.CONTEXT_PROCESSORS``::
+Also add the following to ``settings.CONTEXT_PROCESSORS``:
+
+.. code:: python
 
     CONTEXT_PROCESSORS = (
         # ...
@@ -74,7 +76,9 @@ Let's see a minimal example.
 
     # Each node instance can accept an arbitrary number of children
     blog.children.add(
-        menu.Node(id='last_entries', label='Last entries', pattern_name='blog:last_entries')
+        menu.Node(id='last_entries',
+                  label='Last entries',
+                  pattern_name='blog:last_entries')
     )
     blog.children.add(
         menu.Node(id='archives', label='Archives', pattern_name='blog:archives')
@@ -88,7 +92,9 @@ Let's see a minimal example.
     main_menu.register(login)
 
     # will be shown to authenticated users only
-    logout = menu.AuthenticatedNode(id='logout', label='Logout', pattern_name='accounts_logout')
+    logout = menu.AuthenticatedNode(id='logout',
+                                    label='Logout',
+                                    pattern_name='accounts_logout')
     main_menu.register(logout)
 
 
@@ -141,7 +147,9 @@ You can also directly set children nodes on parent instanciation with the ``chil
                 label='Settings',
                 pattern_name='user:settings',
                 children = [
-                    menu.Node(id='newsletter', label='Newsletter', pattern_name='user:settings:newsletter')
+                    menu.Node(id='newsletter',
+                              label='Newsletter',
+                              pattern_name='user:settings:newsletter')
                 ],
             ),
         ]
@@ -246,7 +254,10 @@ Displayed to users that match a custom test. Usage:
     def can_drink_alcohol(user):
         return user.age >= 21 or user.looks_mature_for_his_age
 
-    drink_alcohol = menu.PassTestNode('drink', label='Have a beer', pattern_name='beer', test=can_drink_alcohol)
+    drink_alcohol = menu.PassTestNode('drink',
+                                      label='Have a beer',
+                                      pattern_name='beer',
+                                      test=can_drink_alcohol)
 
 If it's not enough, you can also override the default templates:
 
