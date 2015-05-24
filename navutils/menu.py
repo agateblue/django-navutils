@@ -188,3 +188,12 @@ class AnyPermissionsNode(Node):
             if has_perm:
                 return True
         return False
+
+
+class PassTestNode(Node):
+    def __init__(self, *args, **kwargs):
+        self.test = kwargs.pop('test')
+        super(PassTestNode, self).__init__(*args, **kwargs)
+
+    def is_viewable_by(self, user):
+        return self.test(user)

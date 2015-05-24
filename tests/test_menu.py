@@ -210,6 +210,22 @@ class AnyPermissionsNodeTest(BaseTestCase):
         self.assertTrue(node.is_viewable_by(self.user))
 
 
+class PassTestNode(BaseTestCase):
+
+    def test_is_viewable_by_user_with_any_required_permissions(self):
+        test = lambda user: 'chuck' in user.username
+
+        node = menu.PassTestNode('test', 'Test', url='http://test.com', test=test)
+
+        self.assertFalse(node.is_viewable_by(self.admin))
+        self.assertFalse(node.is_viewable_by(self.user))
+
+        self.user.username = 'chucknorris'
+
+        self.assertTrue(node.is_viewable_by(self.user))
+
+
+
 class RenderNodeTest(BaseTestCase):
 
     def test_render_node_template_tag(self):
