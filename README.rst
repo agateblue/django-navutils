@@ -5,7 +5,9 @@ Django-navutils
 
 Django-navutils is a lightweight package for handling menu and breadcrumbs inside your django project.
 
-.. contents:: :local:
+.. contents::
+    :local:
+    :depth: 2
 
 Features
 ========
