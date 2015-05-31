@@ -387,10 +387,14 @@ class RenderMenuTest(BaseTestCase):
     def test_template_tag(self):
         main_menu = menu.Menu('main')
         node = menu.Node('test', 'Test', url='http://test.com')
-        main_menu.register(main_menu)
+        main_menu.register(node)
 
         output = navutils_tags.render_menu({}, menu=main_menu, user=self.user)
 
         self.assertHTMLEqual(
             output,
-            '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+            """
+            <ul class="main-menu">
+                <li class="menu-item"><a href="http://test.com">Test</a></li>
+            </ul>
+            """)

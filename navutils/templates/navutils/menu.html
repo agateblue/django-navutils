@@ -2,6 +2,6 @@
 
 <ul class="{{ menu.id }}-menu">
     {% for menu_node in viewable_nodes %}
-        {% render_node menu_node user=user %}
+        {% render_node node=menu_node user=user %}
     {% endfor %}
 </ul>
