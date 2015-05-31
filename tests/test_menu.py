@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser, Permission
+from django.test.client import RequestFactory
 
 from navutils import menu
 from navutils.templatetags import navutils_tags
@@ -10,6 +11,8 @@ User = get_user_model()
 
 class BaseTestCase(TestCase):
     def setUp(self):
+        self.factory = RequestFactory()
+
         self.user = User(username='user')
         self.user.set_password('test')
         self.user.save()
@@ -371,13 +374,23 @@ class RenderNodeTest(BaseTestCase):
             </li>
             """)
 
-# class RenderMenuTest(BaseTestCase):
-#
-#     def test_template_tag(self):
-#         menu = menu.Menu('main')
-#         node = menu.Node('test', 'Test', url='http://test.com')
-#
-#         output = navutils_tags.render_node({}, node, user=self.user)
-#         self.assertHTMLEqual(
-#             output,
-#             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+
+class MenuMixinTest(BaseTestCase):
+
+    def test_set_current_menu_item_in_context(self):
+        response = self.client.get('/')
+        self.assertEqual(response.context['current_menu_item'], 'test:index')
+
+
+class RenderMenuTest(BaseTestCase):
+
+    def test_template_tag(self):
+        main_menu = menu.Menu('main')
+        node = menu.Node('test', 'Test', url='http://test.com')
+        main_menu.register(main_menu)
+
+        output = navutils_tags.render_menu({}, menu=main_menu, user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item"><a href="http://test.com">Test</a></li>')

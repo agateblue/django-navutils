@@ -4,13 +4,23 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def render_menu(context, menu, user, max_depth=999, **kwargs):
-    t = template.loader.get_template(menu.template)
+def render_menu(context,**kwargs):
+
+    menu = kwargs.get('menu', context.get('menu'))
+    if not menu:
+        raise ValueError('Missing menu argument')
+
+    user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
+    if not user:
+        raise ValueError('missing user parameter')
+
+    max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
 
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user)]
     if not viewable_nodes:
         return ''
 
+    t = template.loader.get_template(menu.template)
     return t.render(template.Context({
         'menu': menu,
         'viewable_nodes': viewable_nodes,

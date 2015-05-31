@@ -25,7 +25,6 @@ class Menu(Registry):
         return data.id
 
 
-
 class Node(object):
 
     parent = None
