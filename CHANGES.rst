@@ -1,3 +1,7 @@
+0.3 (03/06/2015):
+
+- Added ``MenuMixin`` for handling current menu node
+
 0.2 (24/05/2015):
 
 - Added PermissionNode for checking against a single permission
