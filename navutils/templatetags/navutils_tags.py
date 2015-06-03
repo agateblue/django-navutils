@@ -4,11 +4,11 @@ register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def render_menu(context,**kwargs):
+def render_menu(context, menu, **kwargs):
 
-    menu = kwargs.get('menu', context.get('menu'))
-    if not menu:
-        raise ValueError('Missing menu argument')
+    # menu = kwargs.get('menu', context.get('menu'))
+    # if not menu:
+    #     raise ValueError('Missing menu argument')
 
     user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
     if not user:
@@ -29,10 +29,10 @@ def render_menu(context,**kwargs):
     }))
 
 @register.simple_tag(takes_context=True)
-def render_node(context, **kwargs):
-    node = kwargs.get('node', context.get('node'))
-    if not node:
-        raise ValueError('Missing node argument')
+def render_node(context, node, **kwargs):
+    # node = kwargs.get('node', context.get('node'))
+    # if not node:
+    #     raise ValueError('Missing node argument')
 
     user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
     if not user:
