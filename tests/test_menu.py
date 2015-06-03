@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser, Permission
+from django.test.client import RequestFactory
 
 from navutils import menu
 from navutils.templatetags import navutils_tags
@@ -10,6 +11,8 @@ User = get_user_model()
 
 class BaseTestCase(TestCase):
     def setUp(self):
+        self.factory = RequestFactory()
+
         self.user = User(username='user')
         self.user.set_password('test')
         self.user.save()
@@ -231,16 +234,25 @@ class RenderNodeTest(BaseTestCase):
     def test_render_node_template_tag(self):
         node = menu.Node('test', 'Test', url='http://test.com')
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node=node, user=self.user)
         self.assertHTMLEqual(
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+
+    def test_render_node_template_tagwith_current(self):
+        node = menu.Node('test', 'Test', url='http://test.com')
+
+        output = navutils_tags.render_node({'current_menu_item':'test'}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item current"><a href="http://test.com">Test</a></li>')
+
 
     def test_render_node_template_tag_with_link_attrs(self):
         attrs = {'target': '_blank', 'title': 'Click me !'}
         node = menu.Node('test', 'Test', url='http://test.com', link_attrs=attrs)
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node=node, user=self.user)
         self.assertHTMLEqual(
             output,
             """<li class="menu-item">
@@ -251,7 +263,7 @@ class RenderNodeTest(BaseTestCase):
         attrs = {'id': 'important'}
         node = menu.Node('test', 'Test', url='http://test.com', attrs=attrs)
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node=node, user=self.user)
         self.assertHTMLEqual(
             output,
             """<li class="menu-item" id="important">
@@ -274,7 +286,7 @@ class RenderNodeTest(BaseTestCase):
             ]
         )
 
-        output = navutils_tags.render_node(node, user=self.user)
+        output = navutils_tags.render_node({}, node=node, user=self.user)
 
         self.assertHTMLEqual(
             output,
@@ -285,6 +297,37 @@ class RenderNodeTest(BaseTestCase):
                     <li class="menu-item"><a href="c1">c1</a></li>
                     <li class="menu-item"><a href="c2">c2</a></li>
                     <li class="menu-item"><a href="c3">c3</a></li>
+                </ul>
+            </li>
+            """)
+
+    def test_render_node_template_tag_with_children_and_current(self):
+        child1 = menu.Node('c1', 'c1', url='c1')
+        child2 = menu.Node('c2', 'c2', url='c2')
+        child3 = menu.Node('c3', 'c3', url='c3')
+
+        node = menu.Node(
+            'test',
+            'Test',
+            url='http://test.com',
+            children=[
+                child1,
+                child2,
+                child3,
+            ]
+        )
+
+        output = navutils_tags.render_node({'current_menu_item':'test:c3'}, node=node, user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <li class="menu-item has-children has-current has-dropdown">
+                <a href="http://test.com">Test</a>
+                <ul class="sub-menu dropdown">
+                    <li class="menu-item"><a href="c1">c1</a></li>
+                    <li class="menu-item"><a href="c2">c2</a></li>
+                    <li class="menu-item current"><a href="c3">c3</a></li>
                 </ul>
             </li>
             """)
@@ -306,7 +349,7 @@ class RenderNodeTest(BaseTestCase):
             ]
         )
 
-        output = navutils_tags.render_node(node, user=self.user, max_depth=1)
+        output = navutils_tags.render_node({}, node=node, user=self.user, max_depth=1)
 
         self.assertHTMLEqual(
             output,
@@ -321,7 +364,7 @@ class RenderNodeTest(BaseTestCase):
             </li>
             """)
 
-        output = navutils_tags.render_node(node, user=self.user, max_depth=0)
+        output = navutils_tags.render_node({}, node=node, user=self.user, max_depth=0)
 
         self.assertHTMLEqual(
             output,
@@ -331,13 +374,27 @@ class RenderNodeTest(BaseTestCase):
             </li>
             """)
 
-# class RenderMenuTest(BaseTestCase):
-#
-#     def test_template_tag(self):
-#         menu = menu.Menu('main')
-#         node = menu.Node('test', 'Test', url='http://test.com')
-#
-#         output = navutils_tags.render_node(node, user=self.user)
-#         self.assertHTMLEqual(
-#             output,
-#             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+
+class MenuMixinTest(BaseTestCase):
+
+    def test_set_current_menu_item_in_context(self):
+        response = self.client.get('/')
+        self.assertEqual(response.context['current_menu_item'], 'test:index')
+
+
+class RenderMenuTest(BaseTestCase):
+
+    def test_template_tag(self):
+        main_menu = menu.Menu('main')
+        node = menu.Node('test', 'Test', url='http://test.com')
+        main_menu.register(node)
+
+        output = navutils_tags.render_menu({}, menu=main_menu, user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <ul class="main-menu">
+                <li class="menu-item"><a href="http://test.com">Test</a></li>
+            </ul>
+            """)

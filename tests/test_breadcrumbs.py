@@ -47,7 +47,7 @@ class RenderBreadcrumbTest(TestCase):
     def test_render_single_crumb(self):
         crumb = Breadcrumb(label='Test', pattern_name='index')
 
-        output = navutils_tags.render_crumb(crumb)
+        output = navutils_tags.render_crumb({}, crumb)
         self.assertHTMLEqual(
             output,
             '<li class="crumb"><a href="/">Test</a></li>')
@@ -57,7 +57,7 @@ class RenderBreadcrumbTest(TestCase):
         crumbs.append(Breadcrumb(label='Test1', pattern_name='index'))
         crumbs.append(Breadcrumb(label='Test2', url='http://test.com'))
 
-        output = navutils_tags.render_breadcrumbs(crumbs)
+        output = navutils_tags.render_breadcrumbs({}, crumbs)
         self.assertHTMLEqual(
             output,
             """

@@ -25,7 +25,6 @@ class Menu(Registry):
         return data.id
 
 
-
 class Node(object):
 
     parent = None
@@ -71,6 +70,8 @@ class Node(object):
         self.reverse_kwargs = reverse_kwargs
         self.link_attrs = link_attrs
         self.attrs = attrs
+
+        self.kwargs = kwargs
 
         if 'class' in self.attrs:
             raise ValueError('CSS class is handled via  the css_class argument, don\'t use attrs for this purpose')
@@ -132,6 +133,14 @@ class Node(object):
 
     def __repr__(self):
         return '<MenuNode {0}>'.format(self.label)
+
+    def is_current(self, current):
+        return self.id == current
+
+    def has_current(self, current, viewable_children):
+        return any([child.is_current(current) for child in viewable_children])
+
+
 
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
