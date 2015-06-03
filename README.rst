@@ -17,6 +17,7 @@ Features
 - Conditionnal menu items display: you want to show a menu link to authenticated users only ? Anonymous ? Staff members ? A custom criteria ? You're covered !
 - i18n-friendly: you can rely on usual django translation mechanisms
 - Unlimited menus
+- Semi-automatic current menu node detection
 
 Requirements
 ============
