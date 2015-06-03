@@ -1,4 +1,5 @@
 from django import template
+from navutils import settings
 
 register = template.Library()
 
@@ -26,6 +27,8 @@ def render_menu(context, menu, **kwargs):
         'viewable_nodes': viewable_nodes,
         'user': user,
         'max_depth': max_depth,
+        'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
+        'menu_config': settings.NAVUTILS_MENU_CONFIG
     }))
 
 @register.simple_tag(takes_context=True)
@@ -64,6 +67,7 @@ def render_node(context, node, **kwargs):
         'max_depth': max_depth,
         'current_depth': current_depth,
         'start_depth': start_depth,
+        'menu_config': settings.NAVUTILS_MENU_CONFIG
     }))
 
 @register.simple_tag(takes_context=True)

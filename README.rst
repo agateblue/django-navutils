@@ -182,6 +182,40 @@ Nodes can be customized in many ways:
         link_attrs = {'target': '_blank', 'data-something': 'fancy-stuff'}
     )
 
+Current node
+------------
+
+You'll probably want to highlight the current node in some way. Navutils provide
+a view mixin you an inherit from in order to achieve this.
+
+Assuming the following menu::
+
+.. code:: python
+
+    from navutils import menu
+
+    main_menu = menu.Menu(id='main')
+    menu.register(main_menu)
+
+    login = menu.Node(id='login', label='Login', pattern_name='account_login')
+    main_menu.register(login)
+
+
+You can bind a view to a menu node with the following code::
+
+.. code:: python
+
+    from navutils import MenuMixin
+
+    class Login(MenuMixin, TemplateView):
+        current_menu_item = 'login'
+
+
+Under the hood, the mixin will pass the value to the context and a `current` class will be added
+ to the login node if the view is displayed. Note that you can achieve the same result
+ with django function-based views, as long as you manually pass the node identifier in the context,
+ under the `current_menu_item` key.
+
 Node reference
 --------------
 

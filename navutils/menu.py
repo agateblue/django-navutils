@@ -71,6 +71,8 @@ class Node(object):
         self.link_attrs = link_attrs
         self.attrs = attrs
 
+        self.kwargs = kwargs
+
         if 'class' in self.attrs:
             raise ValueError('CSS class is handled via  the css_class argument, don\'t use attrs for this purpose')
 
