@@ -176,6 +176,9 @@ Nodes can be customized in many ways:
         # a path to a custom template for rendering the node
         template='myapp/menu/mynode.html',
 
+        # extra context you can use in your node template
+        context={'foo': 'bar'},
+
         # a dict of attributes that will be applied as HTML attributes on the <li>
         attrs = {'style': 'background-color: white;'}
 
