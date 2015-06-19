@@ -22,14 +22,15 @@ def render_menu(context, menu, **kwargs):
         return ''
 
     t = template.loader.get_template(menu.template)
-    return t.render(template.Context({
+    c = {
         'menu': menu,
         'viewable_nodes': viewable_nodes,
         'user': user,
         'max_depth': max_depth,
         'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
         'menu_config': settings.NAVUTILS_MENU_CONFIG
-    }))
+    }
+    return t.render(template.Context(menu.get_context(**c)))
 
 @register.simple_tag(takes_context=True)
 def render_node(context, node, **kwargs):
@@ -57,7 +58,7 @@ def render_node(context, node, **kwargs):
 
     t = template.loader.get_template(node.template)
 
-    return t.render(template.Context({
+    c = {
         'is_current': node.is_current(current),
         'has_current': node.has_current(current, viewable_children),
         'current_menu_item': current,
@@ -68,7 +69,8 @@ def render_node(context, node, **kwargs):
         'current_depth': current_depth,
         'start_depth': start_depth,
         'menu_config': settings.NAVUTILS_MENU_CONFIG
-    }))
+    }
+    return t.render(template.Context(node.get_context(**c)))
 
 @register.simple_tag(takes_context=True)
 def render_crumb(context, crumb, **kwargs):

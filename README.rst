@@ -176,6 +176,9 @@ Nodes can be customized in many ways:
         # a path to a custom template for rendering the node
         template='myapp/menu/mynode.html',
 
+        # extra context you can use in your node template
+        context={'foo': 'bar'},
+
         # a dict of attributes that will be applied as HTML attributes on the <li>
         attrs = {'style': 'background-color: white;'}
 
@@ -189,7 +192,7 @@ Current node
 You'll probably want to highlight the current node in some way. Navutils provide
 a view mixin you an inherit from in order to achieve this.
 
-Assuming the following menu::
+Assuming the following menu:
 
 .. code:: python
 
@@ -202,7 +205,7 @@ Assuming the following menu::
     main_menu.register(login)
 
 
-You can bind a view to a menu node with the following code::
+You can bind a view to a menu node with the following code:
 
 .. code:: python
 

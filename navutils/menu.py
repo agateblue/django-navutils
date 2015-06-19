@@ -19,11 +19,17 @@ class Menu(Registry):
     def __init__(self, id, *args, **kwargs):
         self.id = id
         self.template = kwargs.pop('template', 'navutils/menu.html')
+        self.context = kwargs.pop('context', {})
         super(Menu, self).__init__(*args, **kwargs)
 
     def prepare_name(self, data, name=None):
         return data.id
 
+    def get_context(self, **kwargs):
+        context = {}
+        context.update(kwargs)
+        context.update(self.context)
+        return context
 
 class Node(object):
 
@@ -31,7 +37,7 @@ class Node(object):
 
     def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
                  template='navutils/node.html', children=[], css_class=None,
-                 reverse_kwargs=[], attrs={}, link_attrs={}, **kwargs):
+                 reverse_kwargs=[], attrs={}, link_attrs={}, context={}, **kwargs):
         """
         :param str id: a unique identifier for further retrieval
         :param str label: a label for the node, that will be displayed in templates
@@ -70,7 +76,7 @@ class Node(object):
         self.reverse_kwargs = reverse_kwargs
         self.link_attrs = link_attrs
         self.attrs = attrs
-
+        self.context = context
         self.kwargs = kwargs
 
         if 'class' in self.attrs:
@@ -82,6 +88,12 @@ class Node(object):
             self._children = []
             for node in children:
                 self.add(node)
+
+    def get_context(self, **kwargs):
+        context = {}
+        context.update(kwargs)
+        context.update(self.context)
+        return context
 
     @property
     def children(self):
