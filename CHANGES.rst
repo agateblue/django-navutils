@@ -1,3 +1,7 @@
+0.4 (19/06/2015):
+
+- ``Menu`` and ``Node`` now accept extra context
+
 0.3 (03/06/2015):
 
 - Added ``MenuMixin`` for handling current menu node
