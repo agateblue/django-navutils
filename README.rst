@@ -189,7 +189,7 @@ Current node
 You'll probably want to highlight the current node in some way. Navutils provide
 a view mixin you an inherit from in order to achieve this.
 
-Assuming the following menu::
+Assuming the following menu:
 
 .. code:: python
 
@@ -202,7 +202,7 @@ Assuming the following menu::
     main_menu.register(login)
 
 
-You can bind a view to a menu node with the following code::
+You can bind a view to a menu node with the following code:
 
 .. code:: python
 

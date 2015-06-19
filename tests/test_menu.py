@@ -239,6 +239,16 @@ class RenderNodeTest(BaseTestCase):
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
 
+    def test_render_node_template_tag_with_extra_context(self):
+        node = menu.Node('test', 'Test', url='http://test.com', template='test_app/test_node.html',
+                         context={'foo': 'bar'})
+
+        output = navutils_tags.render_node({}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item"><a href="http://test.com">Test bar</a></li>')
+
+
     def test_render_node_template_tagwith_current(self):
         node = menu.Node('test', 'Test', url='http://test.com')
 
