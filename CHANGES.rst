@@ -1,3 +1,7 @@
+0.5.1 (22/07/2015):
+
+- Updated ``PassTestNode`` with context argument
+
 0.5 (22/07/2015):
 
 - ``Node.is_viewable_by`` now takes a ``context`` argument

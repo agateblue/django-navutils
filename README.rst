@@ -291,7 +291,7 @@ Displayed to users that match a custom test. Usage:
 
 .. code:: python
 
-    def can_drink_alcohol(user):
+    def can_drink_alcohol(user, context):
         return user.age >= 21 or user.looks_mature_for_his_age
 
     drink_alcohol = menu.PassTestNode('drink',

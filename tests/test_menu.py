@@ -216,7 +216,7 @@ class AnyPermissionsNodeTest(BaseTestCase):
 class PassTestNode(BaseTestCase):
 
     def test_is_viewable_by_user_with_any_required_permissions(self):
-        test = lambda user: 'chuck' in user.username
+        test = lambda user, context: 'chuck' in user.username
 
         node = menu.PassTestNode('test', 'Test', url='http://test.com', test=test)
 
