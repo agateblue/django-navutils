@@ -1,3 +1,7 @@
+0.5.2 (22/07/2015):
+
+- Fixed context taht wasn't passed from menu to node
+
 0.5.1 (22/07/2015):
 
 - Updated ``PassTestNode`` with context argument
