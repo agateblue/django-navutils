@@ -217,4 +217,4 @@ class PassTestNode(Node):
         super(PassTestNode, self).__init__(*args, **kwargs)
 
     def is_viewable_by(self, user, context={}):
-        return self.test(user)
+        return self.test(user, context=context)
