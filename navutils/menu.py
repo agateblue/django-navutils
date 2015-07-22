@@ -25,9 +25,7 @@ class Menu(Registry):
     def prepare_name(self, data, name=None):
         return data.id
 
-    def get_context(self, **kwargs):
-        context = {}
-        context.update(kwargs)
+    def get_context(self, context):
         context.update(self.context)
         return context
 
@@ -89,9 +87,7 @@ class Node(object):
             for node in children:
                 self.add(node)
 
-    def get_context(self, **kwargs):
-        context = {}
-        context.update(kwargs)
+    def get_context(self, context):
         context.update(self.context)
         return context
 

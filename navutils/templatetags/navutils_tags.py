@@ -30,13 +30,17 @@ def render_menu(context, menu, **kwargs):
         'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-    return t.render(template.Context(menu.get_context(**c)))
+
+    context.update(c)
+    final_context = menu.get_context(context)
+    return t.render(template.Context(final_context))
 
 @register.simple_tag(takes_context=True)
 def render_node(context, node, **kwargs):
     # node = kwargs.get('node', context.get('node'))
     # if not node:
     #     raise ValueError('Missing node argument')
+
 
     user = kwargs.get('user', context.get('user', getattr(context.get('request', object()), 'user', None)))
     if not user:
@@ -53,7 +57,7 @@ def render_node(context, node, **kwargs):
     viewable_children = []
     if current_depth + 1 <= max_depth:
         for child in node.children:
-            if child.is_viewable_by(user):
+            if child.is_viewable_by(user, context):
                 viewable_children.append(child)
 
     t = template.loader.get_template(node.template)
@@ -70,7 +74,11 @@ def render_node(context, node, **kwargs):
         'start_depth': start_depth,
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-    return t.render(template.Context(node.get_context(**c)))
+    context.update(c)
+    final_context = node.get_context(context)
+
+    return t.render(template.Context(final_context))
+
 
 @register.simple_tag(takes_context=True)
 def render_crumb(context, crumb, **kwargs):
