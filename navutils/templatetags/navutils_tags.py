@@ -17,7 +17,7 @@ def render_menu(context, menu, **kwargs):
 
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
 
-    viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user)]
+    viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user, context)]
     if not viewable_nodes:
         return ''
 
@@ -42,7 +42,7 @@ def render_node(context, node, **kwargs):
     if not user:
         raise ValueError('missing user parameter')
 
-    if not node.is_viewable_by(user):
+    if not node.is_viewable_by(user, context):
         return ''
 
     current = kwargs.get('current_menu_item', context.get('current_menu_item'))

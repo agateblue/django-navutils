@@ -130,7 +130,7 @@ class Node(object):
             reverse=True
         )
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return True
 
     @property
@@ -156,20 +156,20 @@ class Node(object):
 
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return not user.is_authenticated()
 
 
 class AuthenticatedNode(Node):
     """Only viewable by authenticated users"""
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return user.is_authenticated()
 
 
 class StaffNode(AuthenticatedNode):
     """Only viewable by staff members / admins"""
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return user.is_staff or user.is_superuser
 
 
@@ -180,7 +180,7 @@ class PermissionNode(Node):
         self.permission = kwargs.pop('permission')
         super(PermissionNode, self).__init__(*args, **kwargs)
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return user.has_perm(self.permission)
 
 
@@ -191,7 +191,7 @@ class AllPermissionsNode(Node):
         self.permissions = kwargs.pop('permissions')
         super(AllPermissionsNode, self).__init__(*args, **kwargs)
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return all([user.has_perm(perm) for perm in self.permissions])
 
 
@@ -203,7 +203,7 @@ class AnyPermissionsNode(Node):
         self.permissions = kwargs.pop('permissions')
         super(AnyPermissionsNode, self).__init__(*args, **kwargs)
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         for permission in self.permissions:
             has_perm = user.has_perm(permission)
             if has_perm:
@@ -216,5 +216,5 @@ class PassTestNode(Node):
         self.test = kwargs.pop('test')
         super(PassTestNode, self).__init__(*args, **kwargs)
 
-    def is_viewable_by(self, user):
+    def is_viewable_by(self, user, context={}):
         return self.test(user)
