@@ -1,6 +1,10 @@
+0.5.3 (21/08/2015):
+
+- Added microdata for better breadcrumb handling by search engines
+
 0.5.2 (22/07/2015):
 
-- Fixed context taht wasn't passed from menu to node
+- Fixed context that wasn't passed from menu to node
 
 0.5.1 (22/07/2015):
 
