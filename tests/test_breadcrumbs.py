@@ -50,7 +50,7 @@ class RenderBreadcrumbTest(TestCase):
         output = navutils_tags.render_crumb({}, crumb)
         self.assertHTMLEqual(
             output,
-            '<li class="crumb"><a href="/">Test</a></li>')
+            '<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="crumb"><a itemprop="url" href="/"><span itemprop="title">Test</span></a></li>')
 
     def test_render_breadcrumbs(self):
         crumbs = []
@@ -62,7 +62,7 @@ class RenderBreadcrumbTest(TestCase):
             output,
             """
             <ul class="breadcrumbs">
-                <li class="crumb"><a href="/">Test1</a></li>
-                <li class="crumb current"><a href="http://test.com">Test2</a></li>
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="crumb"><a itemprop="url" href="/"><span itemprop="title">Test1</span></a></li>
+                <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="crumb current"><a itemprop="url" href="http://test.com"><span itemprop="title">Test2</span></a></li>
             </ul>
             """)
