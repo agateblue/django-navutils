@@ -16,7 +16,6 @@ def render_menu(context, menu, **kwargs):
         raise ValueError('missing user parameter')
 
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
-
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user, context)]
     if not viewable_nodes:
         return ''
