@@ -1,3 +1,7 @@
+0.5.4 (29/09/2015):
+
+- Triggered autodiscover in navutils, fix #1 failing example
+
 0.5.3 (21/08/2015):
 
 - Added microdata for better breadcrumb handling by search engines
