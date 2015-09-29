@@ -5,7 +5,7 @@ from persisting_theory import Registry
 
 class Menus(Registry):
     """ Keep a reference to all menus"""
-    look_into = 'menus'
+    look_into = 'menu'
 
     def prepare_name(self, data, name=None):
         return data.id
