@@ -33,5 +33,8 @@ matrix:
 # command to run tests using coverage, e.g. python setup.py test
 script: tox -e $TOX_ENV
 
+install:
+  - pip install -r requirements/travis.txt
+
 after_success:
-- codecov -e TOX_ENV
+  - codecov -e TOX_ENV
