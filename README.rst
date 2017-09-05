@@ -78,12 +78,12 @@ Let's see a minimal example.
                        link_attrs={'target': '_blank'})
 
     # Each node instance can accept an arbitrary number of children
-    blog.children.add(
+    blog.add(
         menu.Node(id='last_entries',
                   label='Last entries',
                   pattern_name='blog:last_entries')
     )
-    blog.children.add(
+    blog.add(
         menu.Node(id='archives', label='Archives', pattern_name='blog:archives')
     )
 
