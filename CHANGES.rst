@@ -1,3 +1,7 @@
+0.5.5 (05/09/2017):
+
+- Django 1.11 compatibility (#5 by @jan-lugfl)
+
 0.5.4 (29/09/2015):
 
 - Triggered autodiscover in navutils, fix #1 failing example
