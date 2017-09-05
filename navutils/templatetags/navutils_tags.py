@@ -29,10 +29,8 @@ def render_menu(context, menu, **kwargs):
         'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-
-    context.update(c)
-    final_context = menu.get_context(context)
-    return t.render(template.Context(final_context))
+    final_context = menu.get_context(c)
+    return t.render(final_context)
 
 @register.simple_tag(takes_context=True)
 def render_node(context, node, **kwargs):
@@ -73,10 +71,9 @@ def render_node(context, node, **kwargs):
         'start_depth': start_depth,
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-    context.update(c)
-    final_context = node.get_context(context)
+    final_context = node.get_context(c)
 
-    return t.render(template.Context(final_context))
+    return t.render(final_context)
 
 
 @register.simple_tag(takes_context=True)
@@ -84,16 +81,16 @@ def render_crumb(context, crumb, **kwargs):
 
     t = template.loader.get_template('navutils/crumb.html')
 
-    return t.render(template.Context({
+    return t.render({
         'crumb': crumb,
         'last': kwargs.get('last', False),
-    }))
+    })
 
 @register.simple_tag(takes_context=True)
 def render_breadcrumbs(context, crumbs, **kwargs):
 
     t = template.loader.get_template('navutils/breadcrumbs.html')
 
-    return t.render(template.Context({
+    return t.render({
         'crumbs': crumbs,
-    }))
+    })
