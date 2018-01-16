@@ -408,3 +408,21 @@ class RenderMenuTest(BaseTestCase):
                 <li class="menu-item"><a href="http://test.com">Test</a></li>
             </ul>
             """)
+
+    def test_context_available_in_template(self):
+        main_menu = menu.Menu('main')
+        node = menu.Node('context', 'Context', url='http://test-context.com',
+                         template='test_app/test_node.html')
+        main_menu.register(node)
+
+        output = navutils_tags.render_menu({'foo': 'bar'}, menu=main_menu,
+                                           user=self.user)
+
+        self.assertHTMLEqual(
+            output,
+            """
+            <ul class="main-menu">
+                <li class="menu-item"><a href="http://test-context.com">Context bar</a></li>
+            </ul>
+            """
+        )
