@@ -1,3 +1,8 @@
+0.6 (18/01/2018):
+
+- Django 2 compatibility (#9 by @thperret)
+- Dropped django 1.8 and 1.9 compatibility (#9 by @thperret)
+
 0.5.5 (05/09/2017):
 
 - Django 1.11 compatibility (#5 by @jan-lugfl)
