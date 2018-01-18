@@ -1,4 +1,8 @@
-from django.core.urlresolvers import reverse
+try:
+    # Django 1.10+
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 class Breadcrumb(object):
