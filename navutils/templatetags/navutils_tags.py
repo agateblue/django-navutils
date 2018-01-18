@@ -29,8 +29,13 @@ def render_menu(context, menu, **kwargs):
         'current_menu_item': kwargs.get('current_menu_item', context.get('current_menu_item')),
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-    final_context = menu.get_context(c)
-    return t.render(final_context)
+    context.update(c)
+    final_context = menu.get_context(context)
+    try:
+        return t.render(final_context)
+    except TypeError:
+        # Django 2.0+
+        return t.render(final_context.flatten())
 
 @register.simple_tag(takes_context=True)
 def render_node(context, node, **kwargs):
@@ -71,9 +76,14 @@ def render_node(context, node, **kwargs):
         'start_depth': start_depth,
         'menu_config': settings.NAVUTILS_MENU_CONFIG
     }
-    final_context = node.get_context(c)
+    context.update(c)
+    final_context = node.get_context(context)
 
-    return t.render(final_context)
+    try:
+        return t.render(final_context)
+    except TypeError:
+        # Django 2.0+
+        return t.render(final_context.flatten())
 
 
 @register.simple_tag(takes_context=True)

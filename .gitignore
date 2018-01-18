@@ -1,1 +1,5 @@
 dist
+*.pyc
+*.egg-info/
+.tox/
+.cache/

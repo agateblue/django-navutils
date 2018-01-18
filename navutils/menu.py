@@ -1,4 +1,8 @@
-from django.core.urlresolvers import reverse
+try:
+    # Django 1.10+
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 from persisting_theory import Registry
 
@@ -153,13 +157,21 @@ class Node(object):
 class AnonymousNode(Node):
     """Only viewable by anonymous users"""
     def is_viewable_by(self, user, context={}):
-        return not user.is_authenticated()
+        try:
+            return not user.is_authenticated()
+        except TypeError:
+            # Django 2.0+
+            return not user.is_authenticated
 
 
 class AuthenticatedNode(Node):
     """Only viewable by authenticated users"""
     def is_viewable_by(self, user, context={}):
-        return user.is_authenticated()
+        try:
+            return user.is_authenticated()
+        except TypeError:
+            # Django 2.0+
+            return user.is_authenticated
 
 
 class StaffNode(AuthenticatedNode):
