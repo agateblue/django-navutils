@@ -89,7 +89,7 @@ def render_node(context, node, **kwargs):
 @register.simple_tag(takes_context=True)
 def render_crumb(context, crumb, **kwargs):
 
-    t = template.loader.get_template('navutils/crumb.html')
+    t = template.loader.get_template(settings.NAVUTILS_CRUMB_TEMPLATE)
 
     return t.render({
         'crumb': crumb,
@@ -99,7 +99,7 @@ def render_crumb(context, crumb, **kwargs):
 @register.simple_tag(takes_context=True)
 def render_breadcrumbs(context, crumbs, **kwargs):
 
-    t = template.loader.get_template('navutils/breadcrumbs.html')
+    t = template.loader.get_template(settings.NAVUTILS_BREADCRUMBS_TEMPLATE)
 
     return t.render({
         'crumbs': crumbs,
