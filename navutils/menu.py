@@ -1,4 +1,3 @@
-from navutils import settings
 try:
     # Django 1.10+
     from django.urls import reverse
@@ -23,7 +22,7 @@ class Menu(Registry):
     """A collection of nodes"""
     def __init__(self, id, *args, **kwargs):
         self.id = id
-        self.template = kwargs.pop('template', settings.NAVUTILS_MENU_TEMPLATE)
+        self.template = kwargs.pop('template', 'navutils/menu.html')
         self.context = kwargs.pop('context', {})
         super(Menu, self).__init__(*args, **kwargs)
 
@@ -39,7 +38,7 @@ class Node(object):
     parent = None
 
     def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
-                 template=settings.NAVUTILS_NODE_TEMPLATE, children=[], css_class=None,
+                 template='navutils/node.html', children=[], css_class=None,
                  reverse_kwargs=[], attrs={}, link_attrs={}, context={}, **kwargs):
         """
         :param str id: a unique identifier for further retrieval

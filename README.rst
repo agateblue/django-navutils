@@ -47,21 +47,6 @@ Also add the following to ``settings.CONTEXT_PROCESSORS``:
 Usage
 =====
 
-Templates
-*********
-
-You can globally override the templates used by specifying any of the following
-
-``settings.py``:
-
-.. code:: python
-
-    NAVUTILS_MENU_TEMPLATE
-    NAVUTILS_NODE_TEMPLATE
-    NAVUTILS_BREADCRUMBS_TEMPLATE
-    NAVUTILS_CRUMB_TEMPLATE
-
-
 Menus
 *****
 
