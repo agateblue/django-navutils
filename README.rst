@@ -164,8 +164,10 @@ Nodes can be customized in many ways:
 
     heavily_customized_node = menu.Node(
         'customized',
-        'My custom menu',
-        url='#',
+        'My custom menu',  # Supports arbitrary template values as well
+                           # like {{ request.user }}
+        url='#',  # Supports arbitrary template values as well
+                  # like {{ request.user }}
 
         # a custom CSS class that will be applied to the node on rendering
         css_class='custom-class',
