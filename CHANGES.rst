@@ -1,3 +1,10 @@
+0.7 (22/02/2019):
+
+- Allow for empty URL value (#11 by @wgordon17)
+- Document global template override (#12 by @wgordon17)
+- Process arbitrary template tags in nodes (#13 by @wgordon17)
+- Updated test matrix (Django 2.1, Python 3.7, dropped Django 1.10)
+
 0.6 (18/01/2018):
 
 - Django 2 compatibility (#9 by @thperret)
