@@ -68,7 +68,7 @@ class Node(object):
         """
         if pattern_name and url:
             raise ValueError('MenuNode accepts either a url or a pattern_name arg, but not both')
-        if not pattern_name and not url:
+        if pattern_name is None and url is None:
             raise ValueError('MenuNode needs either a url or a pattern_name arg')
 
         self._id = id

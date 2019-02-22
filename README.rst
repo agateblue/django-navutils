@@ -176,6 +176,8 @@ Nodes can be customized in many ways:
         title='click me!',
 
         # a path to a custom template for rendering the node
+        # it's also possible to globally specify a custom template by naming
+        # your template '<yourapp>/templates/navutils/node.html'
         template='myapp/menu/mynode.html',
 
         # extra context you can use in your node template
