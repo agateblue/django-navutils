@@ -22,6 +22,7 @@ class Menu(Registry):
     """A collection of nodes"""
     def __init__(self, id, *args, **kwargs):
         self.id = id
+        self.css_class = kwargs.pop('css_class', None)
         self.template = kwargs.pop('template', 'navutils/menu.html')
         self.context = kwargs.pop('context', {})
         super(Menu, self).__init__(*args, **kwargs)
@@ -38,7 +39,7 @@ class Node(object):
     parent = None
 
     def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
-                 template='navutils/node.html', children=[], css_class=None,
+                 template='navutils/node.html', children=[], css_class=None, submenu_css_class=None,
                  reverse_kwargs=[], attrs={}, link_attrs={}, context={}, **kwargs):
         """
         :param str id: a unique identifier for further retrieval
@@ -56,6 +57,8 @@ class Node(object):
         Defaults to ``[]``.
         :param str css_class: a CSS class that will be applied to the node when
         rendering
+        :param str submenu_css_class: a CSS class that will be applied to any
+        submenu's in the node when rendering
         :param str template: the template that will be used to render the node.\
         defaults to `navutils/menu/node.html`
         :param dict node_attrs: a dictionnary of attributes to apply to the node

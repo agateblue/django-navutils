@@ -104,3 +104,9 @@ def render_breadcrumbs(context, crumbs, **kwargs):
     return t.render({
         'crumbs': crumbs,
     })
+
+@register.simple_tag(takes_context=True)
+def render_nested(context, template_text):
+    # create template from text
+    tpl = template.Template(template_text)
+    return tpl.render(context)

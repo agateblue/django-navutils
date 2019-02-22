@@ -239,6 +239,23 @@ class RenderNodeTest(BaseTestCase):
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
 
+    def test_render_node_template_tag_with_embedded_template(self):
+        node = menu.Node('test', '{{ 1|add:"2" }}', url='http://test.com')
+
+        output = navutils_tags.render_node({}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item"><a href="http://test.com">3</a></li>')
+
+    def test_render_node_template_tag_with_embedded_template_and_context(self):
+        node = menu.Node('test', '{{ foo }}', url='http://test.com',
+            context={'foo': 'bar'})
+
+        output = navutils_tags.render_node({}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item"><a href="http://test.com">bar</a></li>')
+
     def test_render_node_template_tag_with_extra_context(self):
         node = menu.Node('test', 'Test', url='http://test.com', template='test_app/test_node.html',
                          context={'foo': 'bar'})
