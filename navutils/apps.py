@@ -1,10 +1,9 @@
-from django.apps import AppConfig
+from django.apps import AppConfig, apps
 
-from django.conf import settings
 
 class App(AppConfig):
     name = 'navutils'
 
     def ready(self):
         from . import menu
-        menu.registry.autodiscover(settings.INSTALLED_APPS)
+        menu.registry.autodiscover((a.name for a in apps.get_app_configs()))
