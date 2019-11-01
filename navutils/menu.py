@@ -113,7 +113,7 @@ class Node(object):
         """
         if self.pattern_name:
             expected_kwargs = {
-                key: value for key, value in kwargs.items()
+                key: value for key, value in self.kwargs.items()
                 if key in self.reverse_kwargs
             }
             return reverse(self.pattern_name, kwargs=expected_kwargs)
