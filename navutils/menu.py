@@ -109,7 +109,10 @@ class Node(object):
         :return: The target URL of the node, after reversing (if needed)
         """
         if self.pattern_name:
-            return reverse(self.pattern_name[0], args=self.pattern_name[1])
+            args = False
+            if len(self.pattern_name)>1:
+                args = self.pattern_name[1]
+            return reverse(self.pattern_name[0], args=args)
         return self.url
 
     def add(self, node):
