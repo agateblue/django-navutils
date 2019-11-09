@@ -109,11 +109,7 @@ class Node(object):
         :return: The target URL of the node, after reversing (if needed)
         """
         if self.pattern_name:
-            expected_kwargs = {
-                key: value for key, value in kwargs.items()
-                if key in self.reverse_kwargs
-            }
-            return reverse(self.pattern_name, kwargs=expected_kwargs)
+            return reverse(self.pattern_name[0], args=self.pattern_name[1])
         return self.url
 
     def add(self, node):
