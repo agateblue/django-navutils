@@ -47,11 +47,22 @@ class NodeTest(BaseTestCase):
 
         self.assertEqual(node.get_url(), '/')
 
+    def test_menu_node_detects_misconfiguration(self):
+        with self.assertRaises(ValueError):
+            menu.Node('test', 'Test')
+        with self.assertRaises(ValueError):
+            menu.Node('test', 'Test', pattern_name='index', url='/')
+        with self.assertRaises(ValueError):
+            menu.Node('test', 'Test', divider=True, pattern_name='index')
 
-    # def test_menu_node_allows_django_pattern_name_with_kwargs(self):
-    #     node = menu.Node('test', 'Test', pattern_name='category', reverse_kwargs=['slug'])
-    #
-    #     self.assertEqual(node.get_url(slug='test'), '/blog/category/test')
+    def test_menu_node_divider(self):
+        node = menu.Node('test', 'Test', divider=True)
+        self.assertTrue(node.is_divider)
+
+    def test_menu_node_allows_django_pattern_name_with_kwargs(self):
+        node = menu.Node('test', 'Test', pattern_name='category', reverse_kwargs=['slug'])
+
+        self.assertEqual(node.get_url(slug='test'), '/blog/category/test')
 
     def test_children_keep_reference_to_parent(self):
         child = menu.Node('c', 'Child', url='http://test.com/child')
@@ -238,6 +249,22 @@ class RenderNodeTest(BaseTestCase):
         self.assertHTMLEqual(
             output,
             '<li class="menu-item"><a href="http://test.com">Test</a></li>')
+
+    def test_render_node_template_tag_with_divider(self):
+        node = menu.Node('test', '', divider=True, css_class='divider')
+
+        output = navutils_tags.render_node({}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item divider"></li>')
+
+    def test_render_node_template_tag_with_header(self):
+        node = menu.Node('test', 'Heading', divider=True, css_class='header')
+
+        output = navutils_tags.render_node({}, node=node, user=self.user)
+        self.assertHTMLEqual(
+            output,
+            '<li class="menu-item header">Heading</li>')
 
     def test_render_node_template_tag_with_embedded_template(self):
         node = menu.Node('test', '{{ 1|add:"2" }}', url='http://test.com')

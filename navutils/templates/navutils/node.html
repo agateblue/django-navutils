@@ -3,7 +3,9 @@
 <li
     class="{% block node_class %}menu-item{% if node.css_class %} {% render_nested node.css_class %}{% endif %}{% if is_current %} {% render_nested menu_config.CURRENT_MENU_ITEM_CLASS %}{% endif %}{% if has_current %} {% render_nested menu_config.CURRENT_MENU_ITEM_PARENT_CLASS %}{% endif %}{% if viewable_children %} has-children has-dropdown{% endif %}{% endblock %}"
     {% for attr, value in node.attrs.items %} {% render_nested attr %}="{% render_nested value %}"{% endfor %}>
-    <a href="{% render_nested node.get_url %}"{% for attr, value in node.link_attrs.items %} {% render_nested attr %}="{% render_nested value %}"{% endfor %}>{% block node_label %}{% render_nested node.label %}{% endblock %}</a>
+    {% if not node.is_divider %}<a %}%}="{% render_nested value %}" %} attr attr, endfor for href="{% render_nested node.get_url %}" in node.link_attrs.items render_nested value{% {% {%>{% endif %}
+        {% block node_label %}{% render_nested node.label %}{% endblock %}
+    {% if not node.is_divider %}</a>{% endif %}
     {% if viewable_children %}
         <ul class="{% block submenu_class %}sub-menu dropdown{% if node.submenu_css_class %} {% render_nested node.submenu_css_class %}{% endif %}{% endblock %}">
             {% for children_node in viewable_children %}

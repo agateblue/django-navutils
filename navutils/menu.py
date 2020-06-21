@@ -38,7 +38,7 @@ class Node(object):
 
     parent = None
 
-    def __init__(self, id, label, pattern_name=None, url=None, weight=0, title=None,
+    def __init__(self, id, label, pattern_name=None, url=None, divider=False, weight=0, title=None,
                  template='navutils/node.html', children=[], css_class=None, submenu_css_class=None,
                  reverse_kwargs=[], attrs={}, link_attrs={}, context={}, **kwargs):
         """
@@ -47,6 +47,7 @@ class Node(object):
         :param str pattern_name: the name of a django url, such as `myapp:index` to use
         as a link for the node. It will be automatically reversed.
         :param str url: a URL to use as a link for the node
+        :parma bool divider: node is a divider - url and pattern_name are ignored; could be header if label is provided
         :param int weight: The importance of the node. Higher is more\
         important, default to ``0``.
         :param list reverse_kwargs: A list of strings that the pattern_name will\
@@ -68,12 +69,15 @@ class Node(object):
         """
         if pattern_name and url:
             raise ValueError('MenuNode accepts either a url or a pattern_name arg, but not both')
-        if pattern_name is None and url is None:
+        if pattern_name is None and url is None and not divider:
             raise ValueError('MenuNode needs either a url or a pattern_name arg')
+        if divider and (pattern_name or url):
+            raise ValueError('MenuNode divider should have neither url nor pattern_name args')
 
         self._id = id
         self.pattern_name = pattern_name
         self.url = url
+        self.is_divider = divider
         self.label = label
         self.weight = weight
         self.template = template
