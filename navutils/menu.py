@@ -153,7 +153,7 @@ class Node(object):
         return self.id == current
 
     def has_current(self, current, viewable_children):
-        return any([child.is_current(current) for child in viewable_children])
+        return any([child.is_current(current) for child in viewable_children]) or any([child.has_current(current,child.children) for child in viewable_children])
 
 
 
