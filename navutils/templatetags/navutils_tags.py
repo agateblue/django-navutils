@@ -17,6 +17,10 @@ def render_menu(context, menu, **kwargs):
 
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     viewable_nodes = [node for node in menu.values() if node.is_viewable_by(user, context)]
+    
+    # Also sort parent nodes if them have weight
+    viewable_nodes = sorted(viewable_nodes,key=lambda i: i.weight, reverse=True)
+
     if not viewable_nodes:
         return ''
 
