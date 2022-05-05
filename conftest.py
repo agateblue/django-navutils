@@ -62,5 +62,6 @@ def pytest_configure():
                     ],
                 },
             },
-        ]
+        ],
+        SECRET_KEY = 'not secure only for testing',
     )
