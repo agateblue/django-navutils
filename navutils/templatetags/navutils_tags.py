@@ -59,6 +59,7 @@ def render_node(context, node, **kwargs):
     max_depth = kwargs.get('max_depth', context.get('max_depth', 999))
     start_depth = kwargs.get('start_depth', context.get('start_depth', node.depth))
     current_depth = kwargs.get('current_depth', context.get('current_depth', node.depth - start_depth))
+    template_file = kwargs.get('template', node.template)
 
     viewable_children = []
     if current_depth + 1 <= max_depth:
@@ -66,7 +67,7 @@ def render_node(context, node, **kwargs):
             if child.is_viewable_by(user, context):
                 viewable_children.append(child)
 
-    t = template.loader.get_template(node.template)
+    t = template.loader.get_template(template_file)
 
     c = {
         'is_current': node.is_current(current),

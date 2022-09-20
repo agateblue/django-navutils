@@ -324,6 +324,17 @@ class RenderNodeTest(BaseTestCase):
                 <a href="http://test.com">Test</a>
             </li>""")
 
+    def test_render_node_template_tag_with_overridden_template_file(self):
+        attrs = {'id': 'important'}
+        node = menu.Node('test', 'Test', url='http://test.com', attrs=attrs)
+
+        output = navutils_tags.render_node({}, node=node, user=self.user, template='navutils/node.html')
+        self.assertHTMLEqual(
+            output,
+            """<li class="menu-item" id="important">
+                <a href="http://test.com">Test</a>
+            </li>""")
+
     def test_render_node_template_tag_with_children(self):
         child1 = menu.Node('c1', 'c1', url='c1')
         child2 = menu.Node('c2', 'c2', url='c2')
